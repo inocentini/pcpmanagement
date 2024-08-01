@@ -1,0 +1,99 @@
+﻿@page "/virtualmachines/adicionar"
+@inherits  CreateVirtualMachinePage
+
+<EditForm Model="@Request" OnValidSubmit="OnValidSubmitAsync">
+    <DataAnnotationsValidator/>
+    <MudGrid Class="d-flex justify-center">
+        <MudItem xs="12" sm="7">
+            <MudCard>
+                <MudText Typo="Typo.h4" Align="Align.Center"><b>Nova Máquina Virtual</b></MudText>
+                <MudCardContent>
+                    
+                    <MudTextField Label="Hostname:"
+                                  Required="true"
+                                  RequiredError="Campo obrigatório."
+                                  @bind-Value="Request.Hostname"
+                                  For="@(() => Request.Hostname)"/>
+
+                    <MudTextField Label="IP:"
+                                  Required="true"
+                                  RequiredError="Campo obrigatório."
+                                  @bind-Value="Request.Ip"
+                                  For="@(() => Request.Ip)"/>
+
+                    <MudTextField Label="UserName:"
+                                  @bind-Value="Request.UserName"
+                                  For="@(() => Request.UserName)"/>
+
+                    <MudTextField Label="VCpu:"
+                                  @bind-Value="Request.VCpu"
+                                  For="@(() => Request.VCpu)"/>
+
+                    <MudTextField Label="Memória:"
+                                  @bind-Value="Request.Memoria"
+                                  For="@(() => Request.Memoria)"/>
+
+                    <MudTextField Label="HD:"
+                                  @bind-Value="Request.HD"
+                                  For="@(() => Request.HD)"/>
+
+                    <MudTextField Label="Ambiente:"
+                                  @bind-Value="Request.Ambiente"
+                                  For="@(() => Request.Ambiente)"/>
+
+                    <MudTextField Label="Emprestimo:"
+                                  @bind-Value="Request.Emprestimo"
+                                  For="@(() => Request.Emprestimo)"/>
+
+                    <MudTextField Label="Resolucao:"
+                                  @bind-Value="Request.Resolucao"
+                                  For="@(() => Request.Resolucao)"/>
+
+                    <MudTextField Label="Environment:"
+                                  Required="true"
+                                  RequiredError="Campo obrigatório."
+                                  @bind-Value="Request.Environment"
+                                  For="@(() => Request.Environment)"/>
+
+                    <MudTextField Label="SistemaOperacional:"
+                                  @bind-Value="Request.SistemaOperacional"
+                                  For="@(() => Request.SistemaOperacional)"/>
+
+                    <MudTextField Label="Status:"
+                                  @bind-Value="Request.Status"
+                                  For="@(() => Request.Status)"/>
+
+                    <MudTextField Label="Observacao:"
+                                  Lines="2"
+                                  @bind-Value="Request.Observacao"
+                                  For="@(() => Request.Observacao)"/>
+
+                    <MudTextField Label="Funcionalidade:"
+                                  @bind-Value="Request.Funcionalidade"
+                                  For="@(() => Request.Funcionalidade)"/>
+
+                    <MudTextField Label="Lote:"
+                                  @bind-Value="Request.Lote"
+                                  For="@(() => Request.Lote)"/>
+
+                    <MudTextField Label="DataCenter:"
+                                  @bind-Value="Request.DataCenter"
+                                  For="@(() => Request.DataCenter)"/>
+
+                    <MudTextField Label="Farm:"
+                                  @bind-Value="Request.Farm"
+                                  For="@(() => Request.Farm)"/>
+
+                </MudCardContent>
+                <MudCardActions>
+                    <MudButton ButtonType="ButtonType.Submit"
+                               Class="ml-auto"
+                               Variant="Variant.Filled"
+                               Color="Color.Tertiary">
+                        Salvar
+                    </MudButton>
+                </MudCardActions>
+            </MudCard>
+        </MudItem>
+    </MudGrid>
+</EditForm>
