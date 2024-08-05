@@ -1,9 +1,10 @@
 ﻿@page "/virtualmachines"
 @using PcpManagement.Core
+@using PcpManagement.Core.Common
 @using PcpManagement.Core.Models
 @inherits GetAllVirtualMachinesPage
 
-<MudDataGrid T="@VirtualMachine" Class="mt-4"
+<MudDataGrid T="@Vm" Class="mt-4"
              Items="@VirtualMachines"
              Filterable="true"
              Hideable="true"
@@ -33,14 +34,14 @@
         <PropertyColumn Property="x => x.Id" Hidden="true" Class=".d-none"/>
         <PropertyColumn Property="x => x.Hostname"/>
         <PropertyColumn Property="x => x.Ip"/>
-        <PropertyColumn Property="x => x.UserName"/>
+        <PropertyColumn Property="x => x.UserVm"/>
         <PropertyColumn Property="x => x.VCpu"/>
         <PropertyColumn Property="x => x.Memoria" Title="Memória"/>
-        <PropertyColumn Property="x => x.HD"/>
+        <PropertyColumn Property="x => x.Hd"/>
         <PropertyColumn Property="x => x.Ambiente"/>
         <PropertyColumn Property="x => x.Emprestimo"/>
         <PropertyColumn Property="x => x.Resolucao" Title="Resolução"/>
-        <PropertyColumn Property="x => x.Environment"/>
+        <PropertyColumn Property="x => x.Enviroment"/>
         <PropertyColumn Property="x => x.SistemaOperacional" Title="Sistema Operacional"/>
         <PropertyColumn Property="x => x.Status"/>
         <PropertyColumn Property="x => x.Observacao" Title="Observação"/>
@@ -60,6 +61,6 @@
         </TemplateColumn>
     </Columns>
     <PagerContent>
-        <MudDataGridPager T="@VirtualMachine" />
+        <MudDataGridPager T="@Vm" />
     </PagerContent>
 </MudDataGrid>

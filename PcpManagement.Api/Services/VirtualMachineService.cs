@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PcpManagement.Api.Data;
-using PcpManagement.Core.Enums;
+using PcpManagement.Core.Common.Enum;
 using PcpManagement.Core.Handlers;
 using PcpManagement.Core.Models;
 using PcpManagement.Core.Requests.VirtualMachines;
@@ -8,24 +8,24 @@ using PcpManagement.Core.Responses;
 
 namespace PcpManagement.Api.Services;
 
-public class VirtualMachineService(AppDbContext context) : IVirtualMachineHandler
+public class VirtualMachineService(RpaContext context) : IVirtualMachineHandler
 {
-    public async Task<Response<VirtualMachine?>> CreateAsync(CreateVirtualMachineRequest request)
+    public async Task<Response<Vm?>> CreateAsync(CreateVirtualMachineRequest request)
     {
         try
         {
-            var vm = new VirtualMachine
+            var vm = new Vm
             {
                 Hostname = request.Hostname,
                 Ip = request.Ip,
-                UserName = request.UserName,
+                UserVm = request.UserVm,
                 VCpu = request.VCpu,
                 Memoria = request.Memoria,
-                HD = request.HD,
+                Hd = request.Hd,
                 Ambiente = request.Ambiente,
                 Emprestimo = request.Emprestimo,
                 Resolucao = request.Resolucao,
-                Environment = request.Environment,
+                Enviroment = request.Enviroment,
                 SistemaOperacional = request.SistemaOperacional,
                 Status = request.Status,
                 Observacao = request.Observacao,
@@ -34,36 +34,36 @@ public class VirtualMachineService(AppDbContext context) : IVirtualMachineHandle
                 DataCenter = request.DataCenter,
                 Farm = request.Farm
             };
-            await context.VirtualMachines.AddAsync(vm);
+            await context.Vms.AddAsync(vm);
             await context.SaveChangesAsync();
-            return new Response<VirtualMachine?>(vm,EStatusCode.Created,"Máquina virtual criada com sucesso.");
+            return new Response<Vm?>(vm,EStatusCode.Created,"Máquina virtual criada com sucesso.");
         }
         catch (Exception e)
         {
             Console.WriteLine(e.Message);
-            return new Response<VirtualMachine?>(null, EStatusCode.InternalServerError,
+            return new Response<Vm?>(null, EStatusCode.InternalServerError,
                 $"Não foi possível criar uma máquina virtual. {e.Message}");
         }
     }
 
-    public async Task<Response<VirtualMachine?>> UpdateAsync(UpdateVirtualMachineRequest request)
+    public async Task<Response<Vm?>> UpdateAsync(UpdateVirtualMachineRequest request)
     {
         try
         {
-            var vm = await context.VirtualMachines.FirstOrDefaultAsync(x => x.Id == request.Id);
+            var vm = await context.Vms.FirstOrDefaultAsync(x => x.Id == request.Id);
             if (vm is null)
-                return new Response<VirtualMachine?>(null, EStatusCode.NotFound, "Máquina virtual não encontrada.");
+                return new Response<Vm?>(null, EStatusCode.NotFound, "Máquina virtual não encontrada.");
             
             vm.Hostname = request.Hostname;
             vm.Ip = request.Ip;
-            vm.UserName = request.UserName;
+            vm.UserVm = request.UserVm;
             vm.VCpu = request.VCpu;
             vm.Memoria = request.Memoria;
-            vm.HD = request.HD;
+            vm.Hd = request.Hd;
             vm.Ambiente = request.Ambiente;
             vm.Emprestimo = request.Emprestimo;
             vm.Resolucao = request.Resolucao;
-            vm.Environment = request.Environment;
+            vm.Enviroment = request.Enviroment;
             vm.SistemaOperacional = request.SistemaOperacional;
             vm.Status = request.Status;
             vm.Observacao = request.Observacao;
@@ -72,68 +72,68 @@ public class VirtualMachineService(AppDbContext context) : IVirtualMachineHandle
             vm.DataCenter = request.DataCenter;
             vm.Farm = request.Farm;
 
-            context.VirtualMachines.Update(vm);
+            context.Vms.Update(vm);
             await context.SaveChangesAsync();
 
-            return new Response<VirtualMachine?>(vm, message:"Máquina virtual atualizada com sucesso.");
+            return new Response<Vm?>(vm, message:"Máquina virtual atualizada com sucesso.");
         }
         catch (Exception ex)
         {
-            return new Response<VirtualMachine?>(null, EStatusCode.InternalServerError,
+            return new Response<Vm?>(null, EStatusCode.InternalServerError,
                 $"Falha na atualização da máquina virtual. {ex.Message}");
         }
     }
 
-    public async Task<Response<VirtualMachine?>> DeleteAsync(DeleteVirtualMachineRequest request)
+    public async Task<Response<Vm?>> DeleteAsync(DeleteVirtualMachineRequest request)
     {
         try
         {
-            var vm = await context.VirtualMachines.FirstOrDefaultAsync(x => x.Id == request.Id);
+            var vm = await context.Vms.FirstOrDefaultAsync(x => x.Id == request.Id);
             if (vm is null)
-                return new Response<VirtualMachine?>(null, EStatusCode.NotFound, "Máquina virtual não encontrada.");
-            context.VirtualMachines.Remove(vm);
+                return new Response<Vm?>(null, EStatusCode.NotFound, "Máquina virtual não encontrada.");
+            context.Vms.Remove(vm);
             await context.SaveChangesAsync();
 
-            return new Response<VirtualMachine?>(vm, message: "Máquina virtual excluída com sucesso.");
+            return new Response<Vm?>(vm, message: "Máquina virtual excluída com sucesso.");
         }
         catch (Exception e)
         {
-            return new Response<VirtualMachine?>(null, EStatusCode.InternalServerError,
+            return new Response<Vm?>(null, EStatusCode.InternalServerError,
                 $"Não foi possível excluir a Máquina virtual. {e.Message}");
         }
     }
 
-    public async Task<Response<VirtualMachine?>> GetByIdAsync(GetVirtualMachineByIdRequest request)
+    public async Task<Response<Vm?>> GetByIdAsync(GetVirtualMachineByIdRequest request)
     {
         try
         {
-            var vm = await context.VirtualMachines.AsNoTracking().FirstOrDefaultAsync(x => x.Id == request.Id); // UsarAsNoTrackingWithIdentityResolution? 
+            var vm = await context.Vms.AsNoTracking().FirstOrDefaultAsync(x => x.Id == request.Id); // UsarAsNoTrackingWithIdentityResolution? 
             return vm is null
-                ? new Response<VirtualMachine?>(null, EStatusCode.NotFound, "Máquina virtual não encontrada.")
-                : new Response<VirtualMachine?>(vm);
+                ? new Response<Vm?>(null, EStatusCode.NotFound, "Máquina virtual não encontrada.")
+                : new Response<Vm?>(vm);
         }
         catch (Exception e)
         {
-            return new Response<VirtualMachine?>(null, EStatusCode.InternalServerError,
+            return new Response<Vm?>(null, EStatusCode.InternalServerError,
                 $"Não foi possível localizar a Máquina virtual. {e.Message}");
         }
     }
-    public async Task<PagedResponse<List<VirtualMachine>?>> GetAllAsync(GetAllVirtualMachinesRequest request)
+    public async Task<PagedResponse<List<Vm>?>> GetAllAsync(GetAllVirtualMachinesRequest request)
     {
         try
         {
-            var query = context.VirtualMachines.AsNoTracking().OrderBy(x => x.Hostname);
+            var query = context.Vms.AsNoTracking().OrderBy(x => x.Hostname);
             var vms = await query
                 .Skip((request.PageNumber - 1) * request.PageSize)
                 .Take(request.PageSize)
                 .ToListAsync();
             var count = await query.CountAsync();
 
-            return new PagedResponse<List<VirtualMachine>?>(vms, count, request.PageNumber, request.PageSize);
+            return new PagedResponse<List<Vm>?>(vms, count, request.PageNumber, request.PageSize);
         }
         catch (Exception e)
         {
-            return new PagedResponse<List<VirtualMachine>?>(null, EStatusCode.InternalServerError,
+            return new PagedResponse<List<Vm>?>(null, EStatusCode.InternalServerError,
                 $"Não foi listar todas as Máquinas virtuais. {e.Message}");
         }
     }

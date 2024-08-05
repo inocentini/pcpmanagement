@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PcpManagement.Api.Data;
 using PcpManagement.Api.Services;
-using PcpManagement.Core;
+using PcpManagement.Core.Common;
 using PcpManagement.Core.Handlers;
 
 namespace PcpManagement.Api.Common.Api;
@@ -27,16 +27,16 @@ public static class BuildExtension
     }
     
     public static void AddDataContexts(this WebApplicationBuilder builder)
-    => builder
+        => builder
             .Services
-            .AddDbContext<AppDbContext>(
+            .AddDbContext<RpaContext>(
                 x =>
                 {
                     x.UseSqlServer(ApiConfiguration.ConnectionString);
                 });
     
     public static void AddCrossOrigin(this WebApplicationBuilder builder)
-    => builder.Services.AddCors(
+        => builder.Services.AddCors(
             options => options.AddPolicy(
                 ApiConfiguration.CorsPolicyName,
                 policy => policy
@@ -48,8 +48,10 @@ public static class BuildExtension
                     .AllowAnyHeader()
                     .AllowCredentials()
             ));
+
     public static void AddServices(this WebApplicationBuilder builder)
-    => builder
+        => builder
             .Services
-            .AddTransient<IVirtualMachineHandler, VirtualMachineService>();
+            .AddTransient<IVirtualMachineHandler, VirtualMachineService>()
+            .AddTransient<IRoboHandler, RoboService>();
 }

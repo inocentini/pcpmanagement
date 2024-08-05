@@ -11,7 +11,7 @@ public partial class GetAllVirtualMachinesPage : ComponentBase
     #region Properties
 
     public bool IsBusy { get; set; } = false;
-    public List<VirtualMachine> VirtualMachines  { get; set; } = [];
+    public List<Vm> VirtualMachines  { get; set; } = [];
 
     #endregion
 

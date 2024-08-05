@@ -4,7 +4,7 @@ using MudBlazor.Services;
 using PcpManagement.App;
 using PcpManagement.App.Common;
 using PcpManagement.App.Request;
-using PcpManagement.Core;
+using PcpManagement.Core.Common;
 using PcpManagement.Core.Handlers;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);

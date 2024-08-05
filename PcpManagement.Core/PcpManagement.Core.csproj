@@ -5,10 +5,11 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-
+  
   <ItemGroup>
-    <Compile Remove="Class1.cs" />
-    <Compile Remove="Enums\StatusCode.cs" />
+    <Folder Include="Requests\Legados\" />
+    <Folder Include="Requests\RpaVmsLegados\" />
+    <Folder Include="Requests\RpaVms\" />
   </ItemGroup>
 
 </Project>

@@ -22,8 +22,8 @@
                                   For="@(() => Request.Ip)"/>
 
                     <MudTextField Label="UserName:"
-                                  @bind-Value="Request.UserName"
-                                  For="@(() => Request.UserName)"/>
+                                  @bind-Value="Request.UserVm"
+                                  For="@(() => Request.UserVm)"/>
 
                     <MudTextField Label="VCpu:"
                                   @bind-Value="Request.VCpu"
@@ -34,8 +34,8 @@
                                   For="@(() => Request.Memoria)"/>
 
                     <MudTextField Label="HD:"
-                                  @bind-Value="Request.HD"
-                                  For="@(() => Request.HD)"/>
+                                  @bind-Value="Request.Hd"
+                                  For="@(() => Request.Hd)"/>
 
                     <MudTextField Label="Ambiente:"
                                   @bind-Value="Request.Ambiente"
@@ -52,8 +52,8 @@
                     <MudTextField Label="Environment:"
                                   Required="true"
                                   RequiredError="Campo obrigatório."
-                                  @bind-Value="Request.Environment"
-                                  For="@(() => Request.Environment)"/>
+                                  @bind-Value="Request.Enviroment"
+                                  For="@(() => Request.Enviroment)"/>
 
                     <MudTextField Label="SistemaOperacional:"
                                   @bind-Value="Request.SistemaOperacional"
