@@ -4,7 +4,6 @@ namespace PcpManagement.Core.Requests.VirtualMachines;
 
 public class UpdateVirtualMachineRequest : Request
 {
-    public long IdVm { get; set; }
     
     [Required]
     [StringLength(16, ErrorMessage = "O Hostname não pode ter mais que 16 caracteres.")]

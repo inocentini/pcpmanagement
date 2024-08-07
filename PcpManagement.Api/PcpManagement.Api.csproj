@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <ItemGroup>
     <ProjectReference Include="..\PcpManagement.Core\PcpManagement.Core.csproj" />
@@ -18,6 +18,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>d963b95f-eda7-4538-8270-c65100403a9f</UserSecretsId>
   </PropertyGroup>
 
 </Project>

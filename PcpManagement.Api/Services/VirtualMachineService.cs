@@ -36,12 +36,12 @@ public class VirtualMachineService(RpaContext context) : IVirtualMachineHandler
             };
             await context.Vms.AddAsync(vm);
             await context.SaveChangesAsync();
-            return new Response<Vm?>(vm,EStatusCode.Created,"Máquina virtual criada com sucesso.");
+            return new Response<Vm?>(vm,code: EStatusCode.Created,"Máquina virtual criada com sucesso.");
         }
         catch (Exception e)
         {
             Console.WriteLine(e.Message);
-            return new Response<Vm?>(null, EStatusCode.InternalServerError,
+            return new Response<Vm?>(null, code: EStatusCode.InternalServerError,
                 $"Não foi possível criar uma máquina virtual. {e.Message}");
         }
     }
@@ -52,7 +52,7 @@ public class VirtualMachineService(RpaContext context) : IVirtualMachineHandler
         {
             var vm = await context.Vms.FirstOrDefaultAsync(x => x.Id == request.Id);
             if (vm is null)
-                return new Response<Vm?>(null, EStatusCode.NotFound, "Máquina virtual não encontrada.");
+                return new Response<Vm?>(null, code: EStatusCode.NotFound, "Máquina virtual não encontrada.");
             
             vm.Hostname = request.Hostname;
             vm.Ip = request.Ip;
@@ -75,11 +75,11 @@ public class VirtualMachineService(RpaContext context) : IVirtualMachineHandler
             context.Vms.Update(vm);
             await context.SaveChangesAsync();
 
-            return new Response<Vm?>(vm, message:"Máquina virtual atualizada com sucesso.");
+            return new Response<Vm?>(vm,message:"Máquina virtual atualizada com sucesso.");
         }
         catch (Exception ex)
         {
-            return new Response<Vm?>(null, EStatusCode.InternalServerError,
+            return new Response<Vm?>(null,code: EStatusCode.InternalServerError,
                 $"Falha na atualização da máquina virtual. {ex.Message}");
         }
     }
@@ -90,7 +90,7 @@ public class VirtualMachineService(RpaContext context) : IVirtualMachineHandler
         {
             var vm = await context.Vms.FirstOrDefaultAsync(x => x.Id == request.Id);
             if (vm is null)
-                return new Response<Vm?>(null, EStatusCode.NotFound, "Máquina virtual não encontrada.");
+                return new Response<Vm?>(null, code: EStatusCode.NotFound, "Máquina virtual não encontrada.");
             context.Vms.Remove(vm);
             await context.SaveChangesAsync();
 
@@ -98,7 +98,7 @@ public class VirtualMachineService(RpaContext context) : IVirtualMachineHandler
         }
         catch (Exception e)
         {
-            return new Response<Vm?>(null, EStatusCode.InternalServerError,
+            return new Response<Vm?>(null, code: EStatusCode.InternalServerError,
                 $"Não foi possível excluir a Máquina virtual. {e.Message}");
         }
     }
@@ -109,16 +109,16 @@ public class VirtualMachineService(RpaContext context) : IVirtualMachineHandler
         {
             var vm = await context.Vms.AsNoTracking().FirstOrDefaultAsync(x => x.Id == request.Id); // UsarAsNoTrackingWithIdentityResolution? 
             return vm is null
-                ? new Response<Vm?>(null, EStatusCode.NotFound, "Máquina virtual não encontrada.")
+                ? new Response<Vm?>(null, code: EStatusCode.NotFound, "Máquina virtual não encontrada.")
                 : new Response<Vm?>(vm);
         }
         catch (Exception e)
         {
-            return new Response<Vm?>(null, EStatusCode.InternalServerError,
+            return new Response<Vm?>(null, code: EStatusCode.InternalServerError,
                 $"Não foi possível localizar a Máquina virtual. {e.Message}");
         }
     }
-    public async Task<PagedResponse<List<Vm>?>> GetAllAsync(GetAllVirtualMachinesRequest request)
+    public async Task<PagedResponse<List<Vm>>> GetAllAsync(GetAllVirtualMachinesRequest request)
     {
         try
         {
@@ -129,11 +129,11 @@ public class VirtualMachineService(RpaContext context) : IVirtualMachineHandler
                 .ToListAsync();
             var count = await query.CountAsync();
 
-            return new PagedResponse<List<Vm>?>(vms, count, request.PageNumber, request.PageSize);
+            return new PagedResponse<List<Vm>>(vms, count, request.PageNumber, request.PageSize);
         }
         catch (Exception e)
         {
-            return new PagedResponse<List<Vm>?>(null, EStatusCode.InternalServerError,
+            return new PagedResponse<List<Vm>>(null, code: EStatusCode.InternalServerError,
                 $"Não foi listar todas as Máquinas virtuais. {e.Message}");
         }
     }

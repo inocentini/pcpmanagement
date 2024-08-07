@@ -1,39 +1,65 @@
 ﻿@page "/virtualmachines"
-@using PcpManagement.Core
 @using PcpManagement.Core.Common
 @using PcpManagement.Core.Models
 @inherits GetAllVirtualMachinesPage
 
-<MudDataGrid T="@Vm" Class="mt-4"
-             Items="@VirtualMachines"
-             Filterable="true"
-             Hideable="true"
-             Dense ColumnResizeMode="ResizeMode.Container" RowsPerPage="@Configuration.DefaultPageSize">
+
+<div class="d-flex justify-end">
+    <MudButton
+        Variant="Variant.Filled"
+        Size="Size.Medium"
+        Color="Color.Tertiary"
+        StartIcon="@Icons.Material.TwoTone.Add"
+        Href="/virtualmachines/adicionar">
+        NOVA MÁQUINA VIRTUAL
+    </MudButton>
+</div>
+
+<MudDataGrid
+    Class="d-flex flex-column flex-grow-1 gap-4"
+    Height="calc(100vh - 13rem);"
+    Filterable="true"
+    QuickFilter="Filter"
+    Hideable="true"
+    T="Vm"
+    Items="@VirtualMachines"
+    ReadOnly="false"
+    EditMode="DataGridEditMode.Form"
+    Dense="true"
+    Bordered="true"
+    CommittedItemChanges="@OnCommittedItemChanges"
+    RowsPerPage="@Configuration.DefaultPageSize"
+    EditTrigger="@(DataGridEditTrigger.Manual)">
     <ToolBarContent>
         <MudText Typo="Typo.h6">Máquinas Virtuais</MudText>
         <MudSpacer />
         <MudTextField
-            Placeholder="Search"
+            @bind-Value="SearchTerm"
+            Placeholder="Pesquisar..."
             Adornment="Adornment.Start"
             Immediate="true"
             AdornmentIcon="@Icons.Material.Filled.Search"
             IconSize="Size.Medium">
         </MudTextField>
-        <MudSpacer />
-        <MudButton
-            Variant="Variant.Filled"
-            Size="Size.Small"
-            Color="Color.Tertiary"
-            StartIcon="@Icons.Material.TwoTone.Add"
-            Href="/virtualmachines/adicionar">
-            NOVA MÁQUINA VIRTUAL
-        </MudButton>
-       
     </ToolBarContent>
     <Columns>
-        <PropertyColumn Property="x => x.Id" Hidden="true" Class=".d-none"/>
-        <PropertyColumn Property="x => x.Hostname"/>
-        <PropertyColumn Property="x => x.Ip"/>
+        <TemplateColumn CellClass="d-flex justify-end">
+            <CellTemplate>
+                <MudMenu Icon="@Icons.Material.Outlined.Menu">
+                    <MudIconButton
+                        Icon="@Icons.Material.Filled.Edit"
+                        Color="Color.Primary"
+                        OnClick="@context.Actions.StartEditingItemAsync"/>
+                    <MudIconButton
+                        Icon="@Icons.Material.Filled.Delete"
+                        Color="Color.Error"
+                        OnClick="() => OnDeleteButtonClickedAsync(context.Item.Id, context.Item.Hostname)"/>
+                </MudMenu>
+            </CellTemplate>
+        </TemplateColumn>
+        <PropertyColumn Property="x => x.Id" Hidden="true" Class=".d-none" Editable="false"/>
+        <PropertyColumn Property="x => x.Hostname" Required="true"/>
+        <PropertyColumn Property="x => x.Ip" Required="true"/>
         <PropertyColumn Property="x => x.UserVm"/>
         <PropertyColumn Property="x => x.VCpu"/>
         <PropertyColumn Property="x => x.Memoria" Title="Memória"/>
@@ -49,18 +75,6 @@
         <PropertyColumn Property="x => x.Lote"/>
         <PropertyColumn Property="x => x.DataCenter"/>
         <PropertyColumn Property="x => x.Farm"/>
-        <TemplateColumn CellClass="d-flex justify-end">
-            <CellTemplate>
-                <MudStack Row>
-                    <MudIconButton
-                        Icon="@Icons.Material.Filled.Delete"
-                        Color="Color.Error"
-                        OnClick="() => OnDeleteButtonClickedAsync(context.Item.Id, context.Item.Hostname)"/>
-                </MudStack>
-            </CellTemplate>
-        </TemplateColumn>
     </Columns>
-    <PagerContent>
-        <MudDataGridPager T="@Vm" />
-    </PagerContent>
 </MudDataGrid>
+

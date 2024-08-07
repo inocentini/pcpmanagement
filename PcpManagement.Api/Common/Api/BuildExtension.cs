@@ -1,8 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using PcpManagement.Api.Data;
 using PcpManagement.Api.Services;
 using PcpManagement.Core.Common;
 using PcpManagement.Core.Handlers;
+using System.Reflection;
 
 namespace PcpManagement.Api.Common.Api;
 
@@ -10,11 +12,18 @@ public static class BuildExtension
 {
     public static void AddConfiguration(this WebApplicationBuilder builder)
     {
-        ApiConfiguration.ConnectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? string.Empty;
-        /* Adicionar no appSettings ou user-secrets futuramente
-        Configuration.BackendUrl = builder.Configuration.GetValue<string>("BackendUrl") ?? string.Empty;
-        Configuration.FrontendUrl = builder.Configuration.GetValue<string>("FrontendUrl") ?? string.Empty;
-        */
+        builder.Configuration.Sources.Clear();
+        builder.Configuration
+            .AddJsonFile("appsettings.json")
+            .AddJsonFile("appsettings.Development.json",false)
+            .AddUserSecrets(Assembly.GetEntryAssembly()!);
+        var connStr = new SqlConnectionStringBuilder(builder.Configuration.GetConnectionString("Dev"))
+            {
+                Password = builder.Configuration.GetSection("DbPwd").Value
+            };
+        Configuration.ConnectionString = connStr.ConnectionString;
+        Configuration.BackendUrl = builder.Configuration.GetSection("BackendUrl").Value ?? string.Empty;
+        Configuration.FrontendUrl = builder.Configuration.GetSection("FrontendUrl").Value ?? string.Empty;
     }
     
     public static void AddDocumentation(this WebApplicationBuilder builder)
@@ -32,7 +41,7 @@ public static class BuildExtension
             .AddDbContext<RpaContext>(
                 x =>
                 {
-                    x.UseSqlServer(ApiConfiguration.ConnectionString);
+                    x.UseSqlServer(Configuration.ConnectionString);
                 });
     
     public static void AddCrossOrigin(this WebApplicationBuilder builder)

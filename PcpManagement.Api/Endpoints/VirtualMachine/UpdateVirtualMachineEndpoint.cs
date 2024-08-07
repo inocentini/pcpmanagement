@@ -1,4 +1,5 @@
 ﻿using PcpManagement.Api.Common.Api;
+using PcpManagement.Core.Common.Enum;
 using PcpManagement.Core.Handlers;
 using PcpManagement.Core.Models;
 using PcpManagement.Core.Requests.VirtualMachines;
@@ -20,8 +21,13 @@ public class UpdateVirtualMachineEndpoint : IEndpoint
     {
         request.Id = id;
         var result = await handler.UpdateAsync(request);
-        return result.IsSuccess
-            ? TypedResults.Ok(result)
-            : TypedResults.BadRequest(result);
+        return result.Code switch
+        {
+            EStatusCode.OK => TypedResults.Ok(result),
+            EStatusCode.BadRequest => TypedResults.BadRequest(result),
+            EStatusCode.NotFound => TypedResults.NotFound(result),
+            EStatusCode.InternalServerError => TypedResults.StatusCode(500),
+            _ => TypedResults.StatusCode((int)result.Code)
+        };
     }
 }

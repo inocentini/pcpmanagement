@@ -8,6 +8,8 @@ public class Configuration
     public const int DefaultPageSize = 25;
     public const EStatusCode DefaultStatusCode = EStatusCode.OK;
 
-    public static string BackendUrl { get; set; } = "http://localhost:5148";
-    public static string FrontendUrl { get; set; } = "http://localhost:5292";
+    public static string ConnectionString { get; set; } = string.Empty;
+    public static string BackendUrl { get; set; } = string.Empty;
+    public static string FrontendUrl { get; set; } = string.Empty;
+
 }
