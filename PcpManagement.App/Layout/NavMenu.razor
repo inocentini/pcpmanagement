@@ -1,10 +1,18 @@
-﻿@*<div class="d-flex justify-center pb-8 pt-8">
-    <img src="imgs/logo.png" alt="Dima - Seu Controle Financeiro" width="200" />
-</div>*@
+﻿
+<div class="d-flex; mud-elevation-0; overflow-hidden" style="position: absolute; top: 0; left: 0; bottom: 0; right: 0;">
+    <img src="@LogoPath" alt="Vivo Logo" height="100%" width="100%" style="opacity: 60%" class="overflow-hidden"/>
+</div>
 
-<MudNavMenu>
-    <MudNavLink Href="/" Match="NavLinkMatch.All">Dashboard</MudNavLink>
-    <MudNavLink Href="/virtualmachine">Máquinas Virtuais</MudNavLink>
-    <MudNavLink Href="/robos">Robos</MudNavLink>
-    
+<MudNavMenu class="mud-elevation-24" Dense="true">
+    <MudNavLink Href="/" Match="NavLinkMatch.All"><MudText>Dashboard</MudText></MudNavLink>
+    <MudNavLink Href="/virtualmachines"><MudText>Máquinas Virtuais</MudText></MudNavLink>
+    <MudNavLink Href="/robos"><MudText>Robos</MudText></MudNavLink>
 </MudNavMenu>
+
+@code
+{
+    [Parameter] public bool IsDarkMode { get; set; }
+    private string LogoPath => IsDarkMode  ? "images/Vivo_White_Logo.png" : "images/Vivo_Purple_Logo.png";
+}
+
+

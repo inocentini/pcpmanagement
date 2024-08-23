@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace PcpManagement.Core.Models;
 
 [Table("legados", Schema = "efetividadeRobotica")]
-public partial class Legados
+public class Legados
 {
     [Key]
     [Column("id")]

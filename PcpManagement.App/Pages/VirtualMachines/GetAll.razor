@@ -4,7 +4,7 @@
 @inherits GetAllVirtualMachinesPage
 
 
-<div class="d-flex justify-end">
+<MudPaper class="d-flex justify-end">
     <MudButton
         Variant="Variant.Filled"
         Size="Size.Medium"
@@ -13,28 +13,42 @@
         Href="/virtualmachines/adicionar">
         NOVA MÁQUINA VIRTUAL
     </MudButton>
-</div>
+    <MudFileUpload T="IBrowserFile" 
+                   Accept=".csv" 
+                   FilesChanged="@OnUploadFileButtonClickedAsync">
+        <ActivatorContent>
+            <MudButton
+                Variant="Variant.Filled"
+                Size="Size.Medium"
+                Color="Color.Tertiary"
+                StartIcon="@Icons.Material.Filled.CloudUpload">
+                CADASTRO MASSIVO
+            </MudButton>
+        </ActivatorContent>
+    </MudFileUpload>
+</MudPaper>
 
-<MudDataGrid
-    Class="d-flex flex-column flex-grow-1 gap-4"
-    Height="calc(100vh - 13rem);"
-    Filterable="true"
-    QuickFilter="Filter"
-    Hideable="true"
-    T="Vm"
-    Items="@VirtualMachines"
-    ReadOnly="false"
-    EditMode="DataGridEditMode.Form"
-    Dense="true"
-    Bordered="true"
-    CommittedItemChanges="@OnCommittedItemChanges"
-    RowsPerPage="@Configuration.DefaultPageSize"
-    EditTrigger="@(DataGridEditTrigger.Manual)">
+<MudDataGrid T="Vm"
+             Class="d-flex flex-column flex-grow-1 gap-4"
+             Items="@VirtualMachines"
+             Filterable="true"
+             QuickFilter="Filter"
+             Hideable="true"
+             ReadOnly="false"
+             EditMode="DataGridEditMode.Form"
+             Hover="true"
+             Dense="true"
+             Bordered="true"
+             FixedHeader="true"
+             FixedFooter="true"
+             CommittedItemChanges="@OnCommittedItemChanges"
+             RowsPerPage="@Configuration.DefaultPageSize"
+             EditTrigger="@(DataGridEditTrigger.Manual)">
     <ToolBarContent>
         <MudText Typo="Typo.h6">Máquinas Virtuais</MudText>
         <MudSpacer />
         <MudTextField
-            @bind-Value="SearchTerm"
+            @bind-Value="@SearchTerm"
             Placeholder="Pesquisar..."
             Adornment="Adornment.Start"
             Immediate="true"
@@ -43,7 +57,13 @@
         </MudTextField>
     </ToolBarContent>
     <Columns>
-        <TemplateColumn CellClass="d-flex justify-end">
+        @if (!(@VirtualMachines.Count > 0))
+        {
+            <MudCard Class="d-flex justify-content-center align-content-end">
+                <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+            </MudCard>
+        }
+        <TemplateColumn CellClass="d-flex; align-content-stretch;" Title="Opções">
             <CellTemplate>
                 <MudMenu Icon="@Icons.Material.Outlined.Menu">
                     <MudIconButton
@@ -76,5 +96,8 @@
         <PropertyColumn Property="x => x.DataCenter"/>
         <PropertyColumn Property="x => x.Farm"/>
     </Columns>
+    <PagerContent>
+        <MudDataGridPager T="Vm" />
+    </PagerContent>
 </MudDataGrid>
 

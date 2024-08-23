@@ -21,7 +21,7 @@ public class CreateRoboEndpoint : IEndpoint
     {
         var response = await handler.CreateAsync(request);
         return response.IsSuccess
-            ? TypedResults.Created($"v1/Robos/{response.Data?.Id}", response)
+            ? TypedResults.Created($"v1/robo/{response.Data?.Id}", response)
             : TypedResults.BadRequest(response);
     }
 }

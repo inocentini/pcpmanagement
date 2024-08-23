@@ -1,0 +1,42 @@
+@using PcpManagement.Core.Models
+@inherits RpaVmsAssociatedComponent
+
+@if(Contexto.RpaVms is null)
+{
+    <MudCard Class="d-flex">
+        <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+    </MudCard>
+}
+else
+{
+    @if (Contexto.RpaVms.Any())
+    {
+        <MudDataGrid
+            T="RpaVm"
+            Items="@Contexto.RpaVms"
+            ReadOnly="false"
+            Hover="true"
+            Dense="true"
+            Bordered="true"
+            FixedHeader="true"
+            Virtualize="true">
+            <ColGroup>
+                <col style="width: 5%;"/>
+                <col style="width: 5%;"/>
+                <col style="width: 5%;"/>
+                <col/>
+            </ColGroup>
+            <Columns>
+                <PropertyColumn Property="x => x.IdVmfkNavigation!.Hostname" Title="Hostname" Style="width: 5%"/>
+                <PropertyColumn Property="x => x.Funcao" Title="Função" Style="width: 5%"/>
+                <PropertyColumn Property="x => x.Status" Style="width: 5%"/>
+                <PropertyColumn Property="x => x.Observacao" Title="Observação"/>
+            </Columns>
+        </MudDataGrid>
+    }
+    else
+    {
+        <MudPaper><MudText> Não há máquinas associadas cadastradas.</MudText></MudPaper>
+    }
+}
+

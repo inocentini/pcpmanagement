@@ -1,0 +1,23 @@
+@page "/Associate"
+@using PcpManagement.Core.Models
+@inherits AssociateVmsRoboPage
+<MudDropContainer>
+    <ChildContent>
+        <MudList T="string" Class="mud-height-full">
+            <MudDropZone  Identifier="Vms" Class="mud-height-full">
+                <MudListSubheader>Máquinas Virtuais</MudListSubheader>
+            </MudDropZone>
+        </MudList>
+        <MudList T="Robo" Class="mud-height-full">
+                <MudListSubheader>Robôs</MudListSubheader>
+                <MudTreeView Items="@Robos">
+                    <ItemTemplate>
+                        <MudTreeViewItem T="Robo" Value="@context.Value" Icon="@context.Icon" LoadingIconColor="Color.Info" CanExpand="@context.Expandable"/>
+                    </ItemTemplate>
+                </MudTreeView>
+            <MudDropZone>
+            </MudDropZone>
+        </MudList>
+    </ChildContent>
+    
+</MudDropContainer>

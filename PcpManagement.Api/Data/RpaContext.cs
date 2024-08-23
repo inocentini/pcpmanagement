@@ -13,11 +13,8 @@ public partial class RpaContext(DbContextOptions<RpaContext> options) : DbContex
     public virtual DbSet<RpaVm> RpaVms { get; set; } = null!;
 
     public virtual DbSet<RpaVmsLegado> RpaVmsLegados { get; set; } = null!;
-
     public virtual DbSet<Vm> Vms { get; set; } = null!;
-
     
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Legados>(entity =>

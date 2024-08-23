@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace PcpManagement.Core.Models;
 
 [Table("robos", Schema = "efetividadeRobotica")]
-public partial class Robo
+public class Robo
 {
     [Key]
     [Column("id")]
@@ -79,5 +79,5 @@ public partial class Robo
     public int? QtdLicenca { get; set; }
 
     [InverseProperty("IdProjetoFkNavigation")] 
-    public virtual ICollection<RpaVm> RpaVms { get; set; } = new List<RpaVm>();
+    public virtual ICollection<RpaVm>? RpaVms { get; set; }
 }

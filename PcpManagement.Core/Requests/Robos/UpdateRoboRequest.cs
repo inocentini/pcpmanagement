@@ -4,8 +4,7 @@ namespace PcpManagement.Core.Requests.Robos;
 
 public class UpdateRoboRequest : Request
 {
-    public long IdRobo { get; set; }
-    
+
     [Required(ErrorMessage = "Informe o Id do Projeto")]
     [StringLength(32, ErrorMessage = "O Id do Projeto deve ter até 32 caracteres")]
     public string IdProjeto { get; set; } = null!;

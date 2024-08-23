@@ -1,28 +1,27 @@
-﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using PcpManagement.Core.Handlers;
-using PcpManagement.Core.Requests.VirtualMachines;
+using PcpManagement.Core.Requests.Robos;
 
-namespace PcpManagement.App.Pages.VirtualMachines;
+namespace PcpManagement.App.Pages.Robos;
 
-public class CreateVirtualMachinePage : ComponentBase
+public class CreateRoboPage : ComponentBase
 {
     #region Properties
-    
+
     public bool IsBusy { get; set; }
-    public CreateVirtualMachineRequest Request { get; set; } = new();
-    
+    public CreateRoboRequest Request { get; set; } = new();
+
     #endregion
 
     #region Services
-
-    [Inject] public IVirtualMachineHandler Handler { get; set; } = null!;
+    [Inject] public IRoboHandler Handler { get; set; } = null!;
     [Inject] public NavigationManager NavigationManager { get; set; } = null!;
     [Inject] public ISnackbar Snackbar { get; set; } = null!;
 
     #endregion
-    
-    #region Methods
+
+    #region Overrides
 
     public async Task OnValidSubmitAsync()
     {
@@ -33,7 +32,7 @@ public class CreateVirtualMachinePage : ComponentBase
             if (result.IsSuccess)
             {
                 Snackbar.Add(result.Message, Severity.Success);
-                NavigationManager.NavigateTo("/virtualmachines");
+                NavigationManager.NavigateTo("/robos");
             }
             else
                 Snackbar.Add(result.Message, Severity.Error);

@@ -62,5 +62,6 @@ public static class BuildExtension
         => builder
             .Services
             .AddTransient<IVirtualMachineHandler, VirtualMachineService>()
-            .AddTransient<IRoboHandler, RoboService>();
+            .AddTransient<IRoboHandler, RoboService>()
+            .AddTransient<IRpaVmHandler,RpaVmsService>();
 }

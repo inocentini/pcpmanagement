@@ -118,7 +118,7 @@ public class RoboService(RpaContext context) : IRoboHandler
         }
     }
 
-    public async Task<PagedResponse<List<Robo>?>> GetAllAsync(GetAllRobosRequest request)
+    public async Task<PagedResponse<List<Robo>>> GetAllAsync(GetAllRobosRequest request)
     {
         try
         {
@@ -129,11 +129,11 @@ public class RoboService(RpaContext context) : IRoboHandler
                 .ToListAsync();
             var count = await query.CountAsync();
 
-            return new PagedResponse<List<Robo>?>(robos, count, request.PageNumber, request.PageSize);
+            return new PagedResponse<List<Robo>>(robos, count, request.PageNumber, request.PageSize);
         }
         catch (Exception e)
         {
-            return new PagedResponse<List<Robo>?>(null, EStatusCode.InternalServerError,
+            return new PagedResponse<List<Robo>>(null, EStatusCode.InternalServerError,
                 $"Não foi listar todos os robos. {e.Message}");
         }
     }

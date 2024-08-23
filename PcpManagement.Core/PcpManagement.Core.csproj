@@ -9,7 +9,6 @@
   <ItemGroup>
     <Folder Include="Requests\Legados\" />
     <Folder Include="Requests\RpaVmsLegados\" />
-    <Folder Include="Requests\RpaVms\" />
   </ItemGroup>
 
 </Project>
