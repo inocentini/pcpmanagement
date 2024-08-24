@@ -1,10 +1,11 @@
 @page "/Associate"
 @using PcpManagement.App.Common.Components
+@using PcpManagement.Core.Models
 @inherits AssociateVmsRoboPage
-<MudDropContainer>
+
+<MudDropContainer T="RpaVm">
     <ChildContent>
         <ListVmsWithoutAssociation/>
         <ListTreeViewRobosVmsAssociated/>
     </ChildContent>
-    
 </MudDropContainer>

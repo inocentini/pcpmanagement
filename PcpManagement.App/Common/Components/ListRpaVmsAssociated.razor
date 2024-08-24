@@ -11,7 +11,7 @@ else
 {
     @if (Contexto.RpaVms.Any())
     {
-        <MudDropZone Identifier="Vms" Class="mud-height-full" Items="@Contexto.RpaVms" ItemDropped="OnVmDropped">
+        <MudDropZone T="RpaVm" Identifier="Robo" Class="mud-height-full" Items="@Contexto.RpaVms" ItemDropped="OnVmDropped">
             <MudList T="RpaVm">
                 <MudListSubheader>Máquinas Virtuais</MudListSubheader>
                 @foreach (var vm in @Contexto.RpaVms)

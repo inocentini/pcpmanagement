@@ -102,13 +102,13 @@ public class GetAllRobosPage : ComponentBase
     public async void OnDeleteButtonClickedAsync(long id, string? projeto)
     {
         var result = await Dialog.ShowMessageBox(
-            "ATENÇÃO",
-            $"Você tem certeza de excluir o robo '{projeto}'?.",
+            "ATENÃ‡ÃƒO",
+            $"VocÃª tem certeza de excluir o robo {projeto ?? string.Empty}?.",
             yesText: "Excluir",
             cancelText: "Cancelar");
 
         if (result is true)
-            await OnDeleteAsync(id, projeto);
+            await OnDeleteAsync(id, projeto?? string.Empty);
 
         StateHasChanged();
     }
@@ -123,7 +123,7 @@ public class GetAllRobosPage : ComponentBase
             };
             await Handler.DeleteAsync(request);
             Robos.RemoveAll(x => x.Id == id);
-            Snackbar.Add($"Robo '{projeto}' removido com sucesso.", Severity.Info);
+            Snackbar.Add($"Robo {projeto} removido com sucesso.", Severity.Info);
         }
         catch (Exception ex)
         {

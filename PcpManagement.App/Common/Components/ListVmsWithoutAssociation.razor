@@ -2,7 +2,7 @@
 @inherits ListVmsWithoutAssociationComponent
 
 <MudList T="RpaVm" Class="mud-height-full">
-    <MudDropZone Identifier="Vms" Class="mud-height-full" Items="@VirtualMachines" ItemDropped="OnVmDropped">
+    <MudDropZone T="Vm" Identifier="Vm" Class="mud-height-full" Items="@VirtualMachines" ItemDropped="OnVmDropped">
         <MudListSubheader>Máquinas Virtuais</MudListSubheader>
         @foreach (var vm in VirtualMachines)
         {
