@@ -1,0 +1,28 @@
+﻿@using PcpManagement.Core.Models
+@inherits ListRpaVmsAssociatedComponent
+
+@if(Contexto.RpaVms is null)
+{
+    <MudCard Class="d-flex">
+        <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+    </MudCard>
+}
+else
+{
+    @if (Contexto.RpaVms.Any())
+    {
+        <MudDropZone Identifier="Vms" Class="mud-height-full" Items="@Contexto.RpaVms" ItemDropped="OnVmDropped">
+            <MudList T="RpaVm">
+                <MudListSubheader>Máquinas Virtuais</MudListSubheader>
+                @foreach (var vm in @Contexto.RpaVms)
+                {
+                    <MudListItem Text="@vm.IdVmfkNavigation!.Hostname" Value="@vm" />
+                }
+            </MudList>
+        </MudDropZone>
+    }
+    else
+    {
+        <MudPaper><MudText> Não há máquinas associadas cadastradas.</MudText></MudPaper>
+    }
+}

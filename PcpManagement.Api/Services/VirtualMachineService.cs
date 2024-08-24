@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using PcpManagement.Api.Data;
 using PcpManagement.Core.Common.Enum;
 using PcpManagement.Core.Handlers;
@@ -137,4 +138,33 @@ public class VirtualMachineService(RpaContext context) : IVirtualMachineHandler
                 $"Não foi listar todas as Máquinas virtuais. {e.Message}");
         }
     }
+
+    public async Task<PagedResponse<List<Vm>>> GetAllWithoutAssociationAsync(GetAllVirtualMachineWithouAssociationRequest request)
+    {
+        try
+        {
+            var query = context.Vms.AsNoTracking()
+                .LeftJoin(context.RpaVms, vm => vm.Id, rpaVm => rpaVm.IdVmfk, (vm, rpaVm) => new { vm, rpaVm })
+                .Where(x => x.rpaVm == null)
+                .Select(x => x.vm);
+
+            var vms = await query
+                .OrderBy(vm => vm.Hostname)
+                .Skip((request.PageNumber - 1) * request.PageSize)
+                .Take(request.PageSize)
+                .ToListAsync();
+
+            var count = await query.CountAsync();
+
+            return new PagedResponse<List<Vm>>(vms, count, request.PageNumber, request.PageSize);
+        }
+        catch (Exception e)
+        {
+            return new PagedResponse<List<Vm>>(null, code: EStatusCode.InternalServerError,
+                $"Não foi possível listar todas as Máquinas virtuais. {e.Message}");
+        }
+    }
+
+    
+
 }

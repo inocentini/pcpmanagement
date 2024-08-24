@@ -11,4 +11,5 @@ public interface IVirtualMachineHandler
     Task<Response<Vm?>> DeleteAsync(DeleteVirtualMachineRequest request);
     Task<Response<Vm?>> GetByIdAsync(GetVirtualMachineByIdRequest request);
     Task<PagedResponse<List<Vm>>> GetAllAsync(GetAllVirtualMachinesRequest request);
+    Task<PagedResponse<List<Vm>>> GetAllWithoutAssociationAsync(GetAllVirtualMachineWithouAssociationRequest request);
 }

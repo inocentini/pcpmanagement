@@ -18,7 +18,7 @@ public class GetAllVirtualMachinesPage : ComponentBase
     public bool IsBusy { get; set; }
     protected List<Vm> VirtualMachines  { get; private set; } = [];
     protected string SearchTerm { get; set; } = string.Empty;
-    private double Progress { get; set; } = 0;
+    private double Progress { get; set; }
 
     #endregion
 
@@ -58,6 +58,7 @@ public class GetAllVirtualMachinesPage : ComponentBase
 
     #endregion
     
+    #region Methods
     
     public async Task OnUploadFileButtonClickedAsync(IBrowserFile file)
     {
@@ -286,4 +287,6 @@ public class GetAllVirtualMachinesPage : ComponentBase
             return true;
         return false;
     };
+    
+    #endregion
 }

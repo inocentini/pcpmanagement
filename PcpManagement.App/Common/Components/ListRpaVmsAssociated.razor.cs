@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using PcpManagement.Core.Handlers;
 using PcpManagement.Core.Models;
@@ -7,7 +7,7 @@ using PcpManagement.Core.Requests.VirtualMachines;
 
 namespace PcpManagement.App.Common.Components;
 
-public  class RpaVmsAssociatedComponent : ComponentBase
+public class ListRpaVmsAssociatedComponent : ComponentBase
 {
     #region Properties
     [Parameter] public Robo Contexto { get; set; } = new();
@@ -43,8 +43,42 @@ public  class RpaVmsAssociatedComponent : ComponentBase
 
     #endregion
     
+    #region Methods
     
+    protected async void OnVmDropped(MudItemDropInfo<RpaVm> dropInfo)
+    {
+        var result = await Dialog.ShowMessageBox(
+            "ATENÇÃO",
+            $"Você tem certeza que quer incluir a vm '{dropInfo.Item!.IdVmfkNavigation!.Hostname}' no projeto: '{Contexto.Projeto}'?.",
+            yesText: "Sim",
+            cancelText: "Cancelar");
+        if (result is true)
+            await OnVmDroppedAsync(dropInfo.Item);
 
+        StateHasChanged();
+    }
 
+    private async Task OnVmDroppedAsync(RpaVm rpaVm)
+    {
+        var request = new AssociateRpaVmsRequest
+        {
+            IdProjetoFk = Contexto.Id,
+            IdVmfk = rpaVm.IdVmfk,
+            Funcao = rpaVm.Funcao,
+            Status = rpaVm.Status,
+            Observacao = rpaVm.Observacao
+        };
+        var result = await RpaVmHandler.AssociateAsync(request);
+        if (result.IsSuccess)
+        {
+            Snackbar.Add(result.Message, Severity.Success);
+            Contexto.RpaVms!.Add(result.Data!);
+        }
+        else
+        {
+            Snackbar.Add(result.Message, Severity.Error);
+        }
+    }
     
+    #endregion
 }

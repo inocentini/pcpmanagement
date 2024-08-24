@@ -2,6 +2,7 @@
 using PcpManagement.Api.Endpoints.Robos;
 using PcpManagement.Api.Endpoints.RpaVms;
 using PcpManagement.Api.Endpoints.VirtualMachine;
+using PcpManagement.Core.Requests.VirtualMachines;
 
 namespace PcpManagement.Api.Endpoints;
 
@@ -22,7 +23,8 @@ public static class Endpoint
             .MapEndpoint<GetVirtualMachineByIdEndpoint>()
             .MapEndpoint<UpdateVirtualMachineEndpoint>()
             .MapEndpoint<DeleteVirtualMachineEndpoint>()
-            .MapEndpoint<GetAllVirtualMachinesEndpoint>();
+            .MapEndpoint<GetAllVirtualMachinesEndpoint>()
+            .MapEndpoint<GetAllVirtualMachineWithoutAssociationEndpoint>();
 
         endpoints.MapGroup("v1/robo")
             .WithTags("Robos")

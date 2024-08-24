@@ -73,5 +73,5 @@ public class Vm
     public string? Farm { get; set; }
 
     [InverseProperty("IdVmfkNavigation")]
-    public virtual ICollection<RpaVm> RpaVms { get; set; } = new List<RpaVm>();
+    public virtual ICollection<RpaVm>? RpaVms { get; set; } 
 }

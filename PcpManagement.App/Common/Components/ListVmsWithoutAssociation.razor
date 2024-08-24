@@ -1,0 +1,12 @@
+﻿@using PcpManagement.Core.Models
+@inherits ListVmsWithoutAssociationComponent
+
+<MudList T="RpaVm" Class="mud-height-full">
+    <MudDropZone Identifier="Vms" Class="mud-height-full" Items="@VirtualMachines" ItemDropped="OnVmDropped">
+        <MudListSubheader>Máquinas Virtuais</MudListSubheader>
+        @foreach (var vm in VirtualMachines)
+        {
+            <MudListItem Text="@vm.Hostname" Value="@vm" />
+        }
+    </MudDropZone>
+</MudList>
