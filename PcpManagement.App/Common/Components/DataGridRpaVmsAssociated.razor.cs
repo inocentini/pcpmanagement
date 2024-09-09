@@ -23,6 +23,8 @@ public  class RpaVmsAssociatedComponent : ComponentBase
     public ISnackbar Snackbar { get; set; } = null!;
     [Inject]
     public IDialogService Dialog { get; set; } = null!;
+    [Inject]
+    public NavigationManager Navigation { get; set; } = null!;
     #endregion
     
     #region Overrides
@@ -41,6 +43,14 @@ public  class RpaVmsAssociatedComponent : ComponentBase
         await InvokeAsync(StateHasChanged);
     }
 
+    #endregion
+    
+    #region Methods
+
+    protected void NavigateToAssociatePage(Robo contexto)
+    {
+        Navigation.NavigateTo($"/AssociateVmToRobo/{contexto.Id}");
+    }
     #endregion
     
     

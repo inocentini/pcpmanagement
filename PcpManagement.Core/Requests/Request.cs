@@ -2,5 +2,5 @@
 
 public abstract class Request
 {
-    public long? Id { get; set; }
+    public virtual long? Id { get; set; }
 }

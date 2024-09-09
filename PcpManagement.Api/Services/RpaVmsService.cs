@@ -96,9 +96,9 @@ public class RpaVmsService(RpaContext context) : IRpaVmHandler
     {
         try
         {
-            var rpavm = await context.RpaVms.FirstOrDefaultAsync(x => x.Id == request.Id);
+            var rpavm = await context.RpaVms.FirstOrDefaultAsync(x=> x.Id == request.Id);
             if(rpavm is null)
-                return new Response<RpaVm?>(null,EStatusCode.NotFound,$"Não foi possível localizar associação. {request.Id}.");
+                return new Response<RpaVm?>(null,EStatusCode.NotFound,$"Não foi possível localizar associação.");
             context.RpaVms.Remove(rpavm);
             await context.SaveChangesAsync();
             return new Response<RpaVm?>(rpavm,message:"Associação desfeita com sucesso.");

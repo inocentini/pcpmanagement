@@ -35,6 +35,16 @@ public static class BuildExtension
         });
     }
     
+    public static void AddLogging(this WebApplicationBuilder builder)
+        => builder
+            .Logging.ClearProviders()
+            .AddConsole()
+            .AddDebug()
+            .AddEventLog()
+            .AddEventSourceLogger()
+            .SetMinimumLevel(LogLevel.Debug)
+            .Services.AddLogging();
+    
     public static void AddDataContexts(this WebApplicationBuilder builder)
         => builder
             .Services

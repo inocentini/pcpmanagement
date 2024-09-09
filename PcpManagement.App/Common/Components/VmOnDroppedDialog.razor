@@ -1,0 +1,14 @@
+﻿@inherits VmOnDroppedDialogComponent
+<MudDialog>
+    <DialogContent>
+        <MudTextField T="string" Label="Função" @bind-Value="Funcao"></MudTextField>
+        <MudTextField T="string" Label="Status" @bind-Value="Status"></MudTextField>
+        <MudTextField T="string" Label="Observação" @bind-Value="Observacao"></MudTextField>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Primary" OnClick="Submit">Ok</MudButton>
+    </DialogActions>
+</MudDialog>
+
+

@@ -39,6 +39,6 @@ public class RpaVmRequest(IHttpClientFactory httpClientFactory) : IRpaVmHandler
     {
         var result = await _httpClient.DeleteAsync($"v1/rpavms/{request.Id}");
         return await result.Content.ReadFromJsonAsync<Response<RpaVm?>>()
-               ?? new Response<RpaVm?>(null, code: EStatusCode.BadRequest, "Falha ao desassociar vm de um robo.");
+               ?? new Response<RpaVm?>(null, code: EStatusCode.BadRequest, "Falha ao desassociar uma vm à um robô.");
     }
 }

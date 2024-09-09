@@ -20,6 +20,16 @@ else
             Bordered="true"
             FixedHeader="true"
             Virtualize="true">
+            <ToolBarContent>
+            <MudButton
+                Variant="Variant.Filled"
+                Size="Size.Medium"
+                Color="Color.Tertiary"
+                StartIcon="@Icons.Material.TwoTone.Add"
+                OnClick="() => NavigateToAssociatePage(Contexto)">
+                    Associar nova máquina.
+                </MudButton>
+            </ToolBarContent>
             <ColGroup>
                 <col style="width: 5%;"/>
                 <col style="width: 5%;"/>
@@ -39,4 +49,5 @@ else
         <MudPaper><MudText> Não há máquinas associadas cadastradas.</MudText></MudPaper>
     }
 }
+
 

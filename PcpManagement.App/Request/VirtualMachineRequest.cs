@@ -40,8 +40,14 @@ public class VirtualMachineRequest(IHttpClientFactory httpClientFactory) : IVirt
         => await _httpClient.GetFromJsonAsync<PagedResponse<List<Vm>>>("v1/virtualmachine")
            ?? new PagedResponse<List<Vm>>(null, code: EStatusCode.BadRequest, "Não foi possível obter as máquinas virtuais.");
 
-    public async Task<PagedResponse<List<Vm>>> GetAllWithoutAssociationAsync(GetAllVirtualMachineWithouAssociationRequest request)
-        => await _httpClient.GetFromJsonAsync<PagedResponse<List<Vm>>>("v1/virtualmachine")
-            ?? new PagedResponse<List<Vm>>(null, code: EStatusCode.BadRequest, "Não foi possível obter as máquinas virtuais sem associação.");
+    public async Task<PagedResponse<List<Vm>>> GetAllWithoutAssociationAsync(
+        GetAllVirtualMachineWithouAssociationRequest request)
+    {
+        var result = await _httpClient.PostAsJsonAsync("v1/virtualmachine/vmwithoutassociation",request);
+        return await result.Content.ReadFromJsonAsync<PagedResponse<List<Vm>>>() 
+               ?? new PagedResponse<List<Vm>>(null, code: EStatusCode.BadRequest, "Não foi possível obter as máquinas virtuais sem associação.");
+    }
+        
+            
     
 }

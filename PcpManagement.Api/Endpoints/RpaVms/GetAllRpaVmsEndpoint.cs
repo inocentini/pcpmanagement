@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.Mvc;
 using PcpManagement.Api.Common.Api;
+using PcpManagement.Core.Common;
 using PcpManagement.Core.Common.Enum;
 using PcpManagement.Core.Handlers;
 using PcpManagement.Core.Models;
@@ -17,8 +19,16 @@ public class GetAllRpaVmsEndpoint : IEndpoint
             .WithOrder(4)
             .Produces<Response<List<RpaVm>?>>();
     
-    public static async Task<IResult> HandleAsync(IRpaVmHandler handler, GetAllRpaVmsRequest request)
+    public static async Task<IResult> HandleAsync(
+        IRpaVmHandler handler,
+        [FromQuery] int pageNumber = Configuration.DefaultPageNumber,
+        [FromQuery] int pageSize = Configuration.DefaultPageSize)
     {
+        var request = new GetAllRpaVmsRequest
+        {
+            PageNumber = 0,
+            PageSize = 0
+        };
         var result = await handler.GetAllAsync(request);
         return result.Code switch
         {

@@ -12,7 +12,7 @@ namespace PcpManagement.Api.Endpoints.VirtualMachine;
 public class GetAllVirtualMachineWithoutAssociationEndpoint : IEndpoint
 {
     public static void Map(IEndpointRouteBuilder app)
-        => app.MapGet("/", HandleAsync)
+        => app.MapPost("/vmwithoutassociation", HandleAsync)
             .WithName("Virtual Machine: Get All Without Association")
             .WithSummary("Recupera todas as máquinas virtuais sem associação de um robo")
             .WithDescription("Recupera todas as máquinas virtuais sem associação de um robo")
@@ -27,7 +27,7 @@ public class GetAllVirtualMachineWithoutAssociationEndpoint : IEndpoint
         var request = new GetAllVirtualMachineWithouAssociationRequest
         {
             PageNumber = pageNumber,
-            PageSize = pageSize,
+            PageSize = pageSize
         };
 
         var result = await handler.GetAllWithoutAssociationAsync(request);

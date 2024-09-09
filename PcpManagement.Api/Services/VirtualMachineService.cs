@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
 using PcpManagement.Api.Data;
 using PcpManagement.Core.Common.Enum;
 using PcpManagement.Core.Handlers;
@@ -138,13 +137,22 @@ public class VirtualMachineService(RpaContext context) : IVirtualMachineHandler
                 $"Não foi listar todas as Máquinas virtuais. {e.Message}");
         }
     }
-
+    
     public async Task<PagedResponse<List<Vm>>> GetAllWithoutAssociationAsync(GetAllVirtualMachineWithouAssociationRequest request)
     {
         try
         {
             var query = context.Vms.AsNoTracking()
-                .LeftJoin(context.RpaVms, vm => vm.Id, rpaVm => rpaVm.IdVmfk, (vm, rpaVm) => new { vm, rpaVm })
+                .GroupJoin(
+                    context.RpaVms,
+                    vm => vm.Id,
+                    rpaVm => rpaVm.IdVmfk,
+                    (vm, rpaVms) => new { vm, rpaVms }
+                )
+                .SelectMany(
+                    x => x.rpaVms.DefaultIfEmpty(),
+                    (x, rpaVm) => new { x.vm, rpaVm }
+                )
                 .Where(x => x.rpaVm == null)
                 .Select(x => x.vm);
 
