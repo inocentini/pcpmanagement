@@ -1,8 +1,6 @@
 @page "/AssociateVmToRobo/{Id:int}"
 @inherits AssociateVmsRoboPage
 
-
-
 <MudDropContainer T="VmEx" Items="@VmsWithoutAssociation" ItemsSelector="@((item,dropzone) => item.Identifier == dropzone)" ItemDropped="OnVmDropped" Class="d-flex flex-wrap flex-grow-1">
     <ChildContent>
         <MudDropZone T="VmEx" Identifier="Not Associated" Class="rounded mud-background-gray pa-6 ma-8 flex-grow-1">
@@ -14,11 +12,10 @@
     </ChildContent>
     <ItemRenderer>
         <MudListItem
-            T="VmEx"
-            Dense="true"
-            Icon="@Icons.Material.Filled.Computer">
+                T="VmEx"
+                Dense="true"
+                Icon="@Icons.Material.Filled.Computer">
             <MudPaper Elevation="25" Class="pa-4 my-4">@context.Hostname</MudPaper>
         </MudListItem>
-    </ItemRenderer> 
+    </ItemRenderer>
 </MudDropContainer>
-

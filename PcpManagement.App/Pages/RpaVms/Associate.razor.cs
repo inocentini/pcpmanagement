@@ -1,4 +1,3 @@
-using System.Reflection.Metadata;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using PcpManagement.App.Common.Components;
@@ -47,7 +46,6 @@ public  class AssociateVmsRoboPage : ComponentBase
             if (roboResult.IsSuccess)
                 Contexto = roboResult.Data!;
             await AtualizaVms();
-            
             await InvokeAsync(StateHasChanged);
         }
         catch (Exception ex)
@@ -73,7 +71,6 @@ public  class AssociateVmsRoboPage : ComponentBase
                 await OnVmDroppedToRoboAsync(dropItem.Item);
             else
                 await OnVmDroppedToVmListAsync(dropItem.Item);
-
             await InvokeAsync(StateHasChanged);
         }
         catch (Exception e)
@@ -83,7 +80,6 @@ public  class AssociateVmsRoboPage : ComponentBase
         {
             IsBusy = false;
         }
-        
     }
 
     private async Task OnVmDroppedToRoboAsync(Vm vm)
@@ -111,17 +107,7 @@ public  class AssociateVmsRoboPage : ComponentBase
             {
                 var vmToUpdate = VmsWithoutAssociation.FirstOrDefault(x => x.Id == vm.Id);
                 if (vmToUpdate != null)
-                {
                     vmToUpdate.Identifier = "Associated";
-                    Contexto.RpaVms!.Add(new RpaVm
-                    {
-                        IdProjetoFk = Contexto.Id,
-                        IdVmfk = vm.Id,
-                        Funcao = dialogData.Funcao,
-                        Status = dialogData.Status,
-                        Observacao = dialogData.Observacao
-                    });
-                }
             }
             Snackbar.Add(associateResult.Message, associateResult.IsSuccess ? Severity.Success : Severity.Error);
             await Task.CompletedTask;
@@ -155,10 +141,7 @@ public  class AssociateVmsRoboPage : ComponentBase
             {
                 var vmToUpdate = VmsWithoutAssociation.FirstOrDefault(x => x.Id == vm.Id);
                 if (vmToUpdate != null)
-                {
                     vmToUpdate.Identifier = "Not Associated";
-                    //Contexto.RpaVms.RemoveAll(x => x.IdVmfk == vm.Id);
-                }
             }
             Snackbar.Add(disassociateResult.Message, disassociateResult.IsSuccess ? Severity.Success : Severity.Error);
             await Task.CompletedTask;
@@ -198,8 +181,6 @@ public  class AssociateVmsRoboPage : ComponentBase
                     Farm = vm.Farm,
                     Identifier = "Not Associated"
                 }).ToList();
-            
-            
             var rpaVms =  await Handler.GetVmsByRoboAsync(new GetAllVmsByRoboRequest{idRoboFK = Contexto.Id});
             if (rpaVms.IsSuccess)
                 foreach (var rpaVm in rpaVms.Data!)
@@ -238,11 +219,13 @@ public  class AssociateVmsRoboPage : ComponentBase
         }
         catch (Exception e)
         {
-            Snackbar.Add($"Erro ao atualizar vms.", Severity.Error);
+            Snackbar.Add($"Erro ao atualizar vms. {e.Message}", Severity.Error);
         }
-        
     }
 
+    #endregion
+
+    #region Nested Classes
     protected class VmEx : Vm
     {
         public string? Identifier { get; set; } = string.Empty;
