@@ -14,7 +14,7 @@ public  class AssociateVmsRoboPage : ComponentBase
     #region Properties
 
     public bool IsBusy { get; set; }
-    protected List<VmEx> VmsWithoutAssociation { get; private set; } = [];
+    protected List<VmEx> Vms { get; private set; } = [];
     protected Robo Contexto { get; private set; } = new();
     [Parameter] public int Id { get; set; }
 
@@ -67,10 +67,11 @@ public  class AssociateVmsRoboPage : ComponentBase
         IsBusy = true;
         try
         {
-            if(dropItem.Item!.Identifier == "Not Associated")
-                await OnVmDroppedToRoboAsync(dropItem.Item);
-            else
+            if(dropItem.Item!.Identifier == "Associated")
                 await OnVmDroppedToVmListAsync(dropItem.Item);
+            else
+                await OnVmDroppedToRoboAsync(dropItem.Item);
+            await AtualizaVms();
             await InvokeAsync(StateHasChanged);
         }
         catch (Exception e)
@@ -105,7 +106,7 @@ public  class AssociateVmsRoboPage : ComponentBase
             var associateResult = await Handler.AssociateAsync(request);
             if (associateResult.IsSuccess)
             {
-                var vmToUpdate = VmsWithoutAssociation.FirstOrDefault(x => x.Id == vm.Id);
+                var vmToUpdate = Vms.FirstOrDefault(x => x.Id == vm.Id);
                 if (vmToUpdate != null)
                     vmToUpdate.Identifier = "Associated";
             }
@@ -119,7 +120,7 @@ public  class AssociateVmsRoboPage : ComponentBase
         }
     }
     
-    private async Task OnVmDroppedToVmListAsync(Vm vm)
+    private async Task OnVmDroppedToVmListAsync(VmEx vm)
     {
         try
         {
@@ -139,7 +140,7 @@ public  class AssociateVmsRoboPage : ComponentBase
             var disassociateResult = await Handler.DeleteAsync(request);
             if (disassociateResult.IsSuccess)
             {
-                var vmToUpdate = VmsWithoutAssociation.FirstOrDefault(x => x.Id == vm.Id);
+                var vmToUpdate = Vms.FirstOrDefault(x => x.Id == vm.Id);
                 if (vmToUpdate != null)
                     vmToUpdate.Identifier = "Not Associated";
             }
@@ -156,31 +157,10 @@ public  class AssociateVmsRoboPage : ComponentBase
     {
         try
         {
-            VmsWithoutAssociation.Clear();
+            Vms.Clear();
             var vmsResult = await VmHandler.GetAllWithoutAssociationAsync(new GetAllVirtualMachineWithouAssociationRequest());
             if (vmsResult.IsSuccess)
-                VmsWithoutAssociation = vmsResult.Data!.Select(vm => new VmEx
-                {
-                    Id = vm.Id,
-                    Hostname = vm.Hostname,
-                    Ip = vm.Ip,
-                    UserVm = vm.UserVm,
-                    VCpu = vm.VCpu,
-                    Memoria = vm.Memoria,
-                    Hd = vm.Hd,
-                    Ambiente = vm.Ambiente,
-                    Emprestimo = vm.Emprestimo,
-                    Resolucao = vm.Resolucao,
-                    Enviroment = vm.Enviroment,
-                    SistemaOperacional = vm.SistemaOperacional,
-                    Status = vm.Status,
-                    Observacao = vm.Observacao,
-                    Funcionalidade = vm.Funcionalidade,
-                    Lote = vm.Lote,
-                    DataCenter = vm.DataCenter,
-                    Farm = vm.Farm,
-                    Identifier = "Not Associated"
-                }).ToList();
+                Vms = vmsResult.Data!.Select(vm => new VmEx(vm, "Not Associated")).ToList();
             var rpaVms =  await Handler.GetVmsByRoboAsync(new GetAllVmsByRoboRequest{idRoboFK = Contexto.Id});
             if (rpaVms.IsSuccess)
                 foreach (var rpaVm in rpaVms.Data!)
@@ -189,32 +169,10 @@ public  class AssociateVmsRoboPage : ComponentBase
                     if (response.IsSuccess)
                     {
                         rpaVm.IdVmfkNavigation = response.Data;
-                        VmsWithoutAssociation.Add(new VmEx
-                        {
-                            Id = response.Data!.Id,
-                            Hostname = response.Data.Hostname,
-                            Ip = response.Data.Ip,
-                            UserVm = response.Data.UserVm,
-                            VCpu = response.Data.VCpu,
-                            Memoria = response.Data.Memoria,
-                            Hd = response.Data.Hd,
-                            Ambiente = response.Data.Ambiente,
-                            Emprestimo = response.Data.Emprestimo,
-                            Resolucao = response.Data.Resolucao,
-                            Enviroment = response.Data.Enviroment,
-                            SistemaOperacional = response.Data.SistemaOperacional,
-                            Status = response.Data.Status,
-                            Observacao = response.Data.Observacao,
-                            Funcionalidade = response.Data.Funcionalidade,
-                            Lote = response.Data.Lote,
-                            DataCenter = response.Data.DataCenter,
-                            Farm = response.Data.Farm,
-                            Identifier = "Associated"
-                        });
+                        Vms.Add(new VmEx(rpaVm.IdVmfkNavigation!, "Associated"));
                     }
                 }
             Contexto.RpaVms = rpaVms.Data ?? [];
-            VmsWithoutAssociation.Sort((x, y) => string.Compare(x.Hostname, y.Hostname, StringComparison.Ordinal));
             await Task.CompletedTask;
         }
         catch (Exception e)
@@ -228,7 +186,31 @@ public  class AssociateVmsRoboPage : ComponentBase
     #region Nested Classes
     protected class VmEx : Vm
     {
-        public string? Identifier { get; set; } = string.Empty;
+        public string? Identifier { get; set; }
+        
+        public VmEx(Vm vm, string identifier)
+        {
+            Id = vm.Id;
+            Hostname = vm.Hostname;
+            Ip = vm.Ip;
+            UserVm = vm.UserVm;
+            VCpu = vm.VCpu;
+            Memoria = vm.Memoria;
+            Hd = vm.Hd;
+            Ambiente = vm.Ambiente;
+            Emprestimo = vm.Emprestimo;
+            Resolucao = vm.Resolucao;
+            Enviroment = vm.Enviroment;
+            SistemaOperacional = vm.SistemaOperacional;
+            Status = vm.Status;
+            Observacao = vm.Observacao;
+            Funcionalidade = vm.Funcionalidade;
+            Lote = vm.Lote;
+            DataCenter = vm.DataCenter;
+            Farm = vm.Farm;
+            //RpaVms = vm.RpaVms;
+            Identifier = identifier;
+        }
     }
     #endregion
 
