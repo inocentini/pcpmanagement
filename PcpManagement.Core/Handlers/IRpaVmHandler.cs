@@ -8,7 +8,9 @@ public interface IRpaVmHandler
 {
     Task<Response<RpaVm?>> AssociateAsync(AssociateRpaVmsRequest request);
     Task<Response<RpaVm?>> UpdateAsync(UpdateRpaVmsRequest request);
-    Task<PagedResponse<List<RpaVm>?>> GetVmsByRoboAsync(GetAllVmsByRoboRequest byRoboRequest);
+    Task<Response<RpaVm?>> GetByVmIdFkAsync(GetRpaVmByVmIdFkRequest request);
+    Task<PagedResponse<List<RpaVm>?>> GetAllByVmIdFkAsync(GetAllRpaVmsByVmIdFkRequest request);
+    Task<PagedResponse<List<RpaVm>?>> GetVmsByRoboAsync(GetAllVmsByRoboRequest request);
     Task<PagedResponse<List<RpaVm>>> GetAllAsync(GetAllRpaVmsRequest request);
     Task<Response<RpaVm?>> DeleteAsync(DeleteRpaVmsRequest request);
     

@@ -1,5 +1,4 @@
 @page "/AssociateVmToRobo/{Id:int}"
-@using PcpManagement.Core.Models
 @inherits AssociateVmsRoboPage
 
 <MudDropContainer T="VmEx" Items="@Vms" ItemsSelector="@((item, dropzone) => item.Identifier == dropzone)" ItemDropped="OnVmDropped" Class="d-flex flex-wrap flex-grow-1">
@@ -13,9 +12,9 @@
     </ChildContent>
     <ItemRenderer>
         <MudListItem
-                T="VmEx"
-                Dense="true"
-                Icon="@Icons.Material.Filled.Computer">
+            T="VmEx"
+            Dense="true"
+            Icon="@Icons.Material.Filled.Computer">
             <MudPaper Elevation="25" Class="pa-4 my-4">@context.Hostname</MudPaper>
         </MudListItem>
     </ItemRenderer>

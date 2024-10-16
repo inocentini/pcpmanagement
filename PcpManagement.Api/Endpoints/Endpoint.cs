@@ -1,7 +1,10 @@
 ﻿using PcpManagement.Api.Common.Api;
+using PcpManagement.Api.Endpoints.Legados;
 using PcpManagement.Api.Endpoints.Robos;
 using PcpManagement.Api.Endpoints.RpaVms;
+using PcpManagement.Api.Endpoints.RpaVmsLegados;
 using PcpManagement.Api.Endpoints.VirtualMachine;
+using PcpManagement.Core.Requests.RpaVmsLegados;
 using PcpManagement.Core.Requests.VirtualMachines;
 
 namespace PcpManagement.Api.Endpoints;
@@ -40,8 +43,27 @@ public static class Endpoint
             .MapEndpoint<UpdateRpaVmsEndpoint>()
             .MapEndpoint<GetAllVmsByRoboEndpoint>()
             .MapEndpoint<GetAllRpaVmsEndpoint>()
-            .MapEndpoint<DeleteRpaVmsEndpoint>();
-
+            .MapEndpoint<DeleteRpaVmsEndpoint>()
+            .MapEndpoint<GetAllRpaVmsByVmIdFkEndpoint>();
+        
+        endpoints.MapGroup("v1/legados")
+            .WithTags("Legados")
+            .MapEndpoint<CreateLegadoEndpoint>()
+            .MapEndpoint<GetLegadoByIdEndpoint>()
+            .MapEndpoint<UpdateLegadoEndpoint>()
+            .MapEndpoint<DeleteLegadoEndpoint>()
+            .MapEndpoint<GetAllLegadosEndpoint>();
+        
+        endpoints.MapGroup("v1/rpavmslegados")
+            .WithTags("RpaVmsLegados")
+            .MapEndpoint<CreateRpaVmsLegadoEndpoint>()
+            .MapEndpoint<GetRpaVmsLegadoByIdEndpoint>()
+            .MapEndpoint<GetRpaVmsLegadoByIdFkEndpoint>()
+            .MapEndpoint<UpdateRpaVmsLegadoEndpoint>()
+            .MapEndpoint<DeleteRpaVmsLegadoEndpoint>()
+            .MapEndpoint<GetAllRpaVmsLegadosEndpoint>()
+            .MapEndpoint<GetAllRpaVmsLegadosByRpaVmEndpoint>();
+            
     }
 
     private static IEndpointRouteBuilder MapEndpoint<T>(this IEndpointRouteBuilder app)

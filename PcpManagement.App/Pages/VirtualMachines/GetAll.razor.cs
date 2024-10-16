@@ -5,6 +5,7 @@ using CsvHelper.Configuration;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using MudBlazor;
+using PcpManagement.App.Common.Components;
 using PcpManagement.Core.Handlers;
 using PcpManagement.Core.Models;
 using PcpManagement.Core.Requests.VirtualMachines;
@@ -16,8 +17,11 @@ public class GetAllVirtualMachinesPage : ComponentBase
     #region Properties
 
     public bool IsBusy { get; set; }
+    
+    public bool HasMoreResults { get; set; }
     protected List<Vm> VirtualMachines  { get; private set; } = [];
     protected string SearchTerm { get; set; } = string.Empty;
+    protected DataGridRpaVmsLegadosAssociated RpaVmsLegadosComponent { get; set; } = null!;
     private double Progress { get; set; }
 
     #endregion
@@ -38,13 +42,20 @@ public class GetAllVirtualMachinesPage : ComponentBase
     {
         Progress = 0;
         IsBusy = true;
+        var pageNumber = 1;
+        const int pageSize = 25;
         try
         {
-            var request = new GetAllVirtualMachinesRequest();
-            var result = await Handler.GetAllAsync(request);
-            if (result.IsSuccess)
-                VirtualMachines = result.Data ?? [];
-            Progress = VirtualMachines.Count;
+            do
+            {
+                var request = new GetAllVirtualMachinesRequest{ PageNumber = pageNumber, PageSize = pageSize };
+                var result = await Handler.GetAllAsync(request);
+                if (!result.IsSuccess) continue;
+                VirtualMachines.AddRange(result.Data!);
+                Progress = (double)VirtualMachines.Count / result.TotalCount;
+                pageNumber++;
+                HasMoreResults = result.Data!.Count > 0;
+            } while(HasMoreResults);
         }
         catch (Exception ex)
         {
@@ -59,8 +70,8 @@ public class GetAllVirtualMachinesPage : ComponentBase
     #endregion
     
     #region Methods
-    
-    public async Task OnUploadFileButtonClickedAsync(IBrowserFile file)
+
+    protected async Task OnUploadFileButtonClickedAsync(IBrowserFile file)
     {
         IsBusy = true;
         if(!file.Name.Split(".").Last().Equals("csv",StringComparison.OrdinalIgnoreCase)){
@@ -125,8 +136,8 @@ public class GetAllVirtualMachinesPage : ComponentBase
             IsBusy = false;
         }
     }
-    
-    public async Task OnUploadFileAsync(List<Vm> vms)
+
+    private async Task OnUploadFileAsync(List<Vm> vms)
     {
         try
         {
@@ -175,8 +186,8 @@ public class GetAllVirtualMachinesPage : ComponentBase
             Snackbar.Add(ex.Message, Severity.Error);
         }
     }
-    
-    public async Task OnCommittedItemChanges(Vm item)
+
+    protected async Task OnCommittedItemChanges(Vm item)
     {
         IsBusy = true;
         try
@@ -231,7 +242,8 @@ public class GetAllVirtualMachinesPage : ComponentBase
 
         StateHasChanged();
     }
-    public async Task OnDeleteAsync(long id, string hostname)
+
+    private async Task OnDeleteAsync(long id, string hostname)
     {
         try
         {

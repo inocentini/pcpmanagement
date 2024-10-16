@@ -5,6 +5,7 @@ using PcpManagement.Core.Handlers;
 using PcpManagement.Core.Models;
 using PcpManagement.Core.Requests.Robos;
 using PcpManagement.Core.Requests.RpaVms;
+using PcpManagement.Core.Requests.RpaVmsLegados;
 using PcpManagement.Core.Requests.VirtualMachines;
 
 namespace PcpManagement.App.Pages.RpaVms;
@@ -28,6 +29,9 @@ public  class AssociateVmsRoboPage : ComponentBase
     public IVirtualMachineHandler VmHandler { get; set; } = null!;
     [Inject]
     public IRoboHandler RoboHandler { get; set; } = null!;
+    
+    [Inject]
+    public IRpaVmsLegadoHandler RpaVmsLegadoHandler { get; set; } = null!;
     [Inject]
     public ISnackbar Snackbar { get; set; } = null!;
     [Inject]
@@ -132,6 +136,9 @@ public  class AssociateVmsRoboPage : ComponentBase
 
             if (!result is true)
                 return;
+            var checkAssociated = await CheckRpaVmsLegadoAssociated(vm.Id);
+            if (checkAssociated) 
+                return;
             var request = new DeleteRpaVmsRequest()
             {
                 Id = Contexto.RpaVms!.FirstOrDefault(x => x.IdVmfk == vm.Id)!.Id
@@ -152,13 +159,28 @@ public  class AssociateVmsRoboPage : ComponentBase
             Snackbar.Add($"Não foi possível desassociar vm {vm.Hostname} com robo {Contexto.Projeto}. {e.Message}", Severity.Error);
         }
     }
+    
+    private async Task<bool> CheckRpaVmsLegadoAssociated(int id)
+    {
+        try
+        {
+            var rpaVmLegado = await RpaVmsLegadoHandler.GetByRpaVmAsync(new GetRpaVmsLegadoByRpaVmRequest { IdRpaVmFk = id });
+            if (!rpaVmLegado.IsSuccess) return false;
+            Snackbar.Add("Não é possível desassociar uma VM que está associada a um RpaVmLegado. Para desassociar, primeiro atualize a associação de rpaVmLegado.", Severity.Error);
+            return true;
+        }catch (Exception e)
+        {
+            Snackbar.Add($"Erro ao verificar se a vm {id} está associada a um rpaVmLegado. {e.Message}", Severity.Error);
+            return false;
+        }
+    }
 
     private async Task AtualizaVms()
     {
         try
         {
             Vms.Clear();
-            var vmsResult = await VmHandler.GetAllWithoutAssociationAsync(new GetAllVirtualMachineWithouAssociationRequest());
+            var vmsResult = await VmHandler.GetAllWithoutAssociationAsync(new GetAllVirtualMachineWithouAssociationRequest(){PageNumber = 1, PageSize = 1000});
             if (vmsResult.IsSuccess)
                 Vms = vmsResult.Data!.Select(vm => new VmEx(vm, "Not Associated")).ToList();
             var rpaVms =  await Handler.GetVmsByRoboAsync(new GetAllVmsByRoboRequest{idRoboFK = Contexto.Id});
@@ -166,11 +188,9 @@ public  class AssociateVmsRoboPage : ComponentBase
                 foreach (var rpaVm in rpaVms.Data!)
                 {
                     var response = await VmHandler.GetByIdAsync(new GetVirtualMachineByIdRequest { Id = rpaVm.IdVmfk });
-                    if (response.IsSuccess)
-                    {
-                        rpaVm.IdVmfkNavigation = response.Data;
-                        Vms.Add(new VmEx(rpaVm.IdVmfkNavigation!, "Associated"));
-                    }
+                    if (!response.IsSuccess) continue;
+                    rpaVm.IdVmfkNavigation = response.Data;
+                    Vms.Add(new VmEx(rpaVm.IdVmfkNavigation!, "Associated"));
                 }
             Contexto.RpaVms = rpaVms.Data ?? [];
             await Task.CompletedTask;

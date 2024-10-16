@@ -1,6 +1,7 @@
 ﻿@page "/virtualmachines"
 @using PcpManagement.Core.Common
 @using PcpManagement.Core.Models
+@using PcpManagement.App.Common.Components
 @inherits GetAllVirtualMachinesPage
 
 
@@ -77,6 +78,7 @@
                 </MudMenu>
             </CellTemplate>
         </TemplateColumn>
+        <HierarchyColumn T="Vm" InitiallyExpandedFunc="vm => vm.RpaVms?.Any() ?? false"/>
         <PropertyColumn Property="x => x.Id" Hidden="true" Class=".d-none" Editable="false"/>
         <PropertyColumn Property="x => x.Hostname" Required="true"/>
         <PropertyColumn Property="x => x.Ip" Required="true"/>
@@ -96,6 +98,9 @@
         <PropertyColumn Property="x => x.DataCenter"/>
         <PropertyColumn Property="x => x.Farm"/>
     </Columns>
+    <ChildRowContent>
+        <DataGridRpaVmsLegadosAssociated @ref="@RpaVmsLegadosComponent" Contexto="context.Item"/>
+    </ChildRowContent>
     <PagerContent>
         <MudDataGridPager T="Vm" />
     </PagerContent>

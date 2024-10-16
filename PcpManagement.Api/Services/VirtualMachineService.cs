@@ -142,20 +142,13 @@ public class VirtualMachineService(RpaContext context) : IVirtualMachineHandler
     {
         try
         {
-            var query = context.Vms.AsNoTracking()
-                .GroupJoin(
-                    context.RpaVms,
-                    vm => vm.Id,
-                    rpaVm => rpaVm.IdVmfk,
-                    (vm, rpaVms) => new { vm, rpaVms }
-                )
-                .SelectMany(
-                    x => x.rpaVms.DefaultIfEmpty(),
-                    (x, rpaVm) => new { x.vm, rpaVm }
-                )
-                .Where(x => x.rpaVm == null)
-                .Select(x => x.vm);
-
+            
+            var query = context.Vms
+                    .Where(vm => !context.RpaVms
+                    .Where(rpaVm => rpaVm.IdVmfk != null)
+                    .Select(rpaVm => rpaVm.IdVmfk)
+                    .Contains(vm.Id));
+            
             var vms = await query
                 .OrderBy(vm => vm.Hostname)
                 .Skip((request.PageNumber - 1) * request.PageSize)

@@ -21,14 +21,8 @@ public class GetAllVirtualMachineWithoutAssociationEndpoint : IEndpoint
 
     private static async Task<IResult> HandleAsync(
         IVirtualMachineHandler handler,
-        [FromQuery] int pageNumber = Configuration.DefaultPageNumber,
-        [FromQuery] int pageSize = Configuration.DefaultPageSize)
+        GetAllVirtualMachineWithouAssociationRequest request)
     {
-        var request = new GetAllVirtualMachineWithouAssociationRequest
-        {
-            PageNumber = pageNumber,
-            PageSize = pageSize
-        };
 
         var result = await handler.GetAllWithoutAssociationAsync(request);
         return result.Code switch

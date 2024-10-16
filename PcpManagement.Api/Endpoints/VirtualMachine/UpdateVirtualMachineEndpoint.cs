@@ -10,7 +10,7 @@ namespace PcpManagement.Api.Endpoints.VirtualMachine;
 public class UpdateVirtualMachineEndpoint : IEndpoint
 {
     public static void Map(IEndpointRouteBuilder app)
-        => app.MapPut("/{id}", HandleAsync)
+        => app.MapPut("/{id:long}", HandleAsync)
             .WithName("Virtual Machine: Update")
             .WithSummary("Atualiza uma máquina virtual")
             .WithDescription("Atualiza uma máquina virtual")

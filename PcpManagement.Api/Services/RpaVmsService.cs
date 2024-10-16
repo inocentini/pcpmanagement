@@ -53,15 +53,48 @@ public class RpaVmsService(RpaContext context) : IRpaVmHandler
             return new Response<RpaVm?>(null,EStatusCode.InternalServerError,$"Não foi possível atualizar a associação.{e.Message}");
         }
     }
-    
 
-    public async Task<PagedResponse<List<RpaVm>?>> GetVmsByRoboAsync(GetAllVmsByRoboRequest byRoboRequest)
+    public async Task<Response<RpaVm?>> GetByVmIdFkAsync(GetRpaVmByVmIdFkRequest request)
+    {
+        try
+        {
+            var rpavm = await context.RpaVms
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.IdVmfk == request.idVmFk);
+            return rpavm is null
+                ? new Response<RpaVm?>(null, EStatusCode.NotFound, "Associação não encontrada.")
+                : new Response<RpaVm?>(rpavm, message: "Associação encontrada.");
+        }
+        catch (Exception e)
+        {
+            return new Response<RpaVm?>(null,EStatusCode.InternalServerError,$"Não foi possível localizar a associação.{e.Message}");
+        }
+    }
+
+    public async Task<PagedResponse<List<RpaVm>?>> GetAllByVmIdFkAsync(GetAllRpaVmsByVmIdFkRequest request)
     {
         try
         {
             var rpavms = await context.RpaVms
                 .AsNoTracking()
-                .Where(x => x.IdProjetoFk == byRoboRequest.idRoboFK)
+                .Where(x => x.IdVmfk == request.IdVmFk)
+                .ToListAsync();
+            return new PagedResponse<List<RpaVm>?>(rpavms);
+        }
+        catch (Exception e)
+        {
+            return new PagedResponse<List<RpaVm>?>(null, EStatusCode.InternalServerError,
+                $"Não foi possível listar todas as associações da máquina virtual. {e.Message}");
+        }
+    }
+
+    public async Task<PagedResponse<List<RpaVm>?>> GetVmsByRoboAsync(GetAllVmsByRoboRequest request)
+    {
+        try
+        {
+            var rpavms = await context.RpaVms
+                .AsNoTracking()
+                .Where(x => x.IdProjetoFk == request.idRoboFK)
                 .ToListAsync();
             return new PagedResponse<List<RpaVm>?>(rpavms);
 

@@ -31,7 +31,6 @@ public class GetAllRobosPage : ComponentBase
 
     #region Overrides
     
-
     protected override async Task OnInitializedAsync()
     {
         IsBusy = true;

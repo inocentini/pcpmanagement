@@ -9,8 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PcpManagement.App", "PcpMan
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PcpManagement.Core", "PcpManagement.Core\PcpManagement.Core.csproj", "{7763E77E-9C80-4252-930A-01C47A6648F4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PcpManagement.Api.Tests", "PcpManagement.Api.Tests\PcpManagement.Api.Tests.csproj", "{C6C759AB-3D16-45D7-AB49-9851AD9AB62C}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,9 +30,5 @@ Global
 		{7763E77E-9C80-4252-930A-01C47A6648F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7763E77E-9C80-4252-930A-01C47A6648F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7763E77E-9C80-4252-930A-01C47A6648F4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C6C759AB-3D16-45D7-AB49-9851AD9AB62C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C6C759AB-3D16-45D7-AB49-9851AD9AB62C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C6C759AB-3D16-45D7-AB49-9851AD9AB62C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C6C759AB-3D16-45D7-AB49-9851AD9AB62C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

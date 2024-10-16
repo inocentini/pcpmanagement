@@ -37,7 +37,7 @@ public class VirtualMachineRequest(IHttpClientFactory httpClientFactory) : IVirt
            ?? new Response<Vm?>(null, code: EStatusCode.BadRequest, "Não foi possível obter a máquina virtual.");
 
     public async Task<PagedResponse<List<Vm>>> GetAllAsync(GetAllVirtualMachinesRequest request)
-        => await _httpClient.GetFromJsonAsync<PagedResponse<List<Vm>>>("v1/virtualmachine")
+        => await _httpClient.GetFromJsonAsync<PagedResponse<List<Vm>>>($"v1/virtualmachine?pageNumber={request.PageNumber}&pageSize={request.PageSize}")
            ?? new PagedResponse<List<Vm>>(null, code: EStatusCode.BadRequest, "Não foi possível obter as máquinas virtuais.");
 
     public async Task<PagedResponse<List<Vm>>> GetAllWithoutAssociationAsync(

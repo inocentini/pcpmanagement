@@ -1,0 +1,61 @@
+@using PcpManagement.Core.Models
+@inherits RpaVmsLegadosAssociatedComponent
+
+@if(Contexto.RpaVms is null)
+{
+    <MudCard Class="d-flex">
+        <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+    </MudCard>
+}
+else
+{
+    @if (@Contexto.RpaVms.FirstOrDefault()!.RpaVmsLegados.Any())
+    {
+        <MudDataGrid
+            T="RpaVmsLegado"
+            Items="@Contexto.RpaVms.FirstOrDefault()!.RpaVmsLegados"
+            ReadOnly="false"
+            Hover="true"
+            Dense="true"
+            Bordered="true"
+            FixedHeader="true"
+            Virtualize="true">
+            <ToolBarContent>
+                <MudButton
+                    Variant="Variant.Filled"
+                    Size="Size.Medium"
+                    Color="Color.Tertiary"
+                    StartIcon="@Icons.Material.TwoTone.Add">
+                        Associar novo legado.
+                </MudButton>
+            </ToolBarContent>
+            <ColGroup>
+                <col style="width: 2%;"/>
+                <col style="width: 2%;"/>
+                <col style="width: 2%;"/>
+                <col style="width: 5%;"/>
+                <col style="width: 2%;"/>
+                <col/>
+            </ColGroup>
+            <Columns>
+                <PropertyColumn Property="x => x.IdLegadoFkNavigation!.Nome" Title="Legado" Style="width: 2%"/>
+                <PropertyColumn Property="x => x.IdLegadoFkNavigation!.Acesso" Title="Acesso" Style="width: 2%"/>
+                <PropertyColumn Property="x => x.IdLegadoFkNavigation!.Autenticacao" Title="Autenticação" Style="width: 2%"/>
+                <PropertyColumn Property="x => x.IdLegadoFkNavigation!.Url" Title="Url" Style="width: 5%"/>
+                <PropertyColumn Property="x => x.UserLegado" Title="UserLegado" Style="width: 2%"/>
+                <PropertyColumn Property="x => x.UserBanco" Title="UserBanco"/>
+            </Columns>
+        </MudDataGrid>
+    }
+    else
+    {
+        <MudButton
+            Variant="Variant.Filled"
+            Size="Size.Medium"
+            Color="Color.Tertiary"
+            StartIcon="@Icons.Material.TwoTone.Add">
+            Associar novo legado.
+        </MudButton>
+        <MudPaper><MudText> Não há legados associados cadastrados.</MudText></MudPaper>
+    }
+}

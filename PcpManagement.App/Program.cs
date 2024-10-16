@@ -16,7 +16,9 @@ builder.Services.AddHttpClient(AppConfiguration.HttpClientName, opt => opt.BaseA
 builder.Services
     .AddTransient<IRoboHandler, RoboRequest>()
     .AddTransient<IVirtualMachineHandler, VirtualMachineRequest>()
-    .AddTransient<IRpaVmHandler,RpaVmRequest>();
+    .AddTransient<IRpaVmHandler,RpaVmRequest>()
+    .AddTransient<ILegadoHandler,LegadosRequest>()
+    .AddTransient<IRpaVmsLegadoHandler,RpaVmsLegadoRequest>();
 //LayoutServices
 builder.Services.AddSingleton<MainLayout.IsDarkModeService>();
 

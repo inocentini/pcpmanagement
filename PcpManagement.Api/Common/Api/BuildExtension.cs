@@ -34,7 +34,7 @@ public static class BuildExtension
             x.CustomSchemaIds(n => n.FullName);
         });
     }
-    
+    /*
     public static void AddLogging(this WebApplicationBuilder builder)
         => builder
             .Logging.ClearProviders()
@@ -44,6 +44,7 @@ public static class BuildExtension
             .AddEventSourceLogger()
             .SetMinimumLevel(LogLevel.Debug)
             .Services.AddLogging();
+    */
     
     public static void AddDataContexts(this WebApplicationBuilder builder)
         => builder
@@ -73,5 +74,7 @@ public static class BuildExtension
             .Services
             .AddTransient<IVirtualMachineHandler, VirtualMachineService>()
             .AddTransient<IRoboHandler, RoboService>()
-            .AddTransient<IRpaVmHandler,RpaVmsService>();
+            .AddTransient<IRpaVmHandler,RpaVmsService>()
+            .AddTransient<ILegadoHandler, LegadoService>()
+            .AddTransient<IRpaVmsLegadoHandler, RpaVmsLegadoService>();
 }
