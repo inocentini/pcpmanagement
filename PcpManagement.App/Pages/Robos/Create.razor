@@ -1,0 +1,41 @@
+@page "/robos/adicionar"
+@inherits CreateRoboPage
+
+<EditForm Model="@Request" OnValidSubmit="OnValidSubmitAsync">
+    <DataAnnotationsValidator/>
+    <MudGrid Class="d-flex justify-center">
+        <MudItem xs="12" sm="7">
+            <MudCard>
+                <MudText Typo="Typo.h4" Align="Align.Center"><b>Cadastro Novo Robo</b></MudText>
+                <MudCardContent>
+                    <MudTextField Label="IdProjeto:" Required="true" RequiredError="Campo obrigatório." @bind-Value="Request.IdProjeto" For="@(() => Request.IdProjeto)"/>
+                    <MudTextField Label="Pti:" Required="true" RequiredError="Campo obrigatório." @bind-Value="Request.Pti" For="@(() => Request.Pti)"/>
+                    <MudTextField Label="Projeto:" Required="true" RequiredError="Campo obrigatório." @bind-Value="Request.Projeto" For="@(() => Request.Projeto)"/>
+                    <MudTextField Label="Descricao:" Required="true" RequiredError="Campo obrigatório." @bind-Value="Request.Descricao" For="@(() => Request.Descricao)"/>
+                    <MudTextField Label="Scrum:" Required="true" RequiredError="Campo obrigatório." @bind-Value="Request.Scrum" For="@(() => Request.Scrum)"/>
+                    <MudTextField Label="Gerencia:" Required="true" RequiredError="Campo obrigatório." @bind-Value="Request.Gerencia" For="@(() => Request.Gerencia)"/>
+                    <MudTextField Label="Equipe:" Required="true" RequiredError="Campo obrigatório." @bind-Value="Request.Equipe" For="@(() => Request.Equipe)"/>
+                    <MudTextField Label="Aplicacao:" Required="true" RequiredError="Campo obrigatório." @bind-Value="Request.Aplicacao" For="@(() => Request.Aplicacao)"/>
+                    <MudTextField Label="Torre:" Required="true" RequiredError="Campo obrigatório." @bind-Value="Request.Torre" For="@(() => Request.Torre)"/>
+                    <MudTextField Label="SuporteFabrica:" Required="true" RequiredError="Campo obrigatório." @bind-Value="Request.SuporteFabrica" For="@(() => Request.SuporteFabrica)"/>
+                    <MudTextField Label="KtDate:" Required="true" RequiredError="Campo obrigatório." @bind-Value="Request.KtDate" For="@(() => Request.KtDate)"/>
+                    <MudTextField Label="ProjetoEm:" Required="true" RequiredError="Campo obrigatório." @bind-Value="Request.ProjetoEm" For="@(() => Request.ProjetoEm)"/>
+                    <MudTextField Label="ClusterAplicacao:" Required="true" RequiredError="Campo obrigatório." @bind-Value="Request.ClusterAplicacao" For="@(() => Request.ClusterAplicacao)"/>
+                    <MudTextField Label="BancodeDados:" Required="true" RequiredError="Campo obrigatório." @bind-Value="Request.BancodeDados" For="@(() => Request.BancodeDados)"/>
+                    <MudTextField Label="NumCrq:" Required="true" RequiredError="Campo obrigatório." @bind-Value="Request.NumCrq" For="@(() => Request.NumCrq)"/>
+                    <MudTextField Label="StatusCrq:" Required="true" RequiredError="Campo obrigatório." @bind-Value="Request.StatusCrq" For="@(() => Request.StatusCrq)"/>
+                    <MudTextField Label="BlindagemDate:" Required="true" RequiredError="Campo obrigatório." @bind-Value="Request.BlindagemDate" For="@(() => Request.BlindagemDate)"/>
+                    <MudTextField Label="QtdLicenca:" Required="true" RequiredError="Campo obrigatório." @bind-Value="Request.QtdLicenca" For="@(() => Request.QtdLicenca)"/>
+                </MudCardContent>
+                <MudCardActions>
+                    <MudButton ButtonType="ButtonType.Submit"
+                               Class="ml-auto"
+                               Variant="Variant.Filled"
+                               Color="Color.Tertiary">
+                        Salvar
+                    </MudButton>
+                </MudCardActions>
+            </MudCard>
+        </MudItem>
+    </MudGrid>
+</EditForm>

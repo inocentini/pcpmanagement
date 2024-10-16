@@ -6,9 +6,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="Class1.cs" />
-    <Compile Remove="Enums\StatusCode.cs" />
-  </ItemGroup>
-
 </Project>

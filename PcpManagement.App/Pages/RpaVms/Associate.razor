@@ -1,0 +1,21 @@
+@page "/AssociateVmToRobo/{Id:int}"
+@inherits AssociateVmsRoboPage
+
+<MudDropContainer T="VmEx" Items="@Vms" ItemsSelector="@((item, dropzone) => item.Identifier == dropzone)" ItemDropped="OnVmDropped" Class="d-flex flex-wrap flex-grow-1">
+    <ChildContent>
+        <MudDropZone T="VmEx" Identifier="Not Associated" CanDrop="@((item) => item.Identifier == "Associated")" Class="rounded mud-background-gray pa-6 ma-8 flex-grow-1">
+            <MudText Typo="Typo.h6" Class="mb-4">Máquinas Virtuais Não Associadas</MudText>
+        </MudDropZone>
+        <MudDropZone T="VmEx" Identifier="Associated" CanDrop="@((item) => item.Identifier == "Not Associated")" Class="rounded mud-background-gray pa-6 ma-8 flex-grow-1">
+            <MudText Typo="Typo.h6" Class="mb-4">@Contexto.Projeto</MudText>
+        </MudDropZone>
+    </ChildContent>
+    <ItemRenderer>
+        <MudListItem
+            T="VmEx"
+            Dense="true"
+            Icon="@Icons.Material.Filled.Computer">
+            <MudPaper Elevation="25" Class="pa-4 my-4">@context.Hostname</MudPaper>
+        </MudListItem>
+    </ItemRenderer>
+</MudDropContainer>

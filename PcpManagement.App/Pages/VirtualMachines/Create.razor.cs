@@ -5,11 +5,11 @@ using PcpManagement.Core.Requests.VirtualMachines;
 
 namespace PcpManagement.App.Pages.VirtualMachines;
 
-public partial class CreateVirtualMachinePage : ComponentBase
+public class CreateVirtualMachinePage : ComponentBase
 {
     #region Properties
     
-    public bool IsBusy { get; set; } = false;
+    public bool IsBusy { get; set; }
     public CreateVirtualMachineRequest Request { get; set; } = new();
     
     #endregion

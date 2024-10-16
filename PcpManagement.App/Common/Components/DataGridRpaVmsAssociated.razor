@@ -1,0 +1,61 @@
+@using PcpManagement.Core.Models
+@inherits RpaVmsAssociatedComponent
+
+@if(Contexto.RpaVms is null)
+{
+    <MudCard Class="d-flex">
+        <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+    </MudCard>
+}
+else
+{
+    @if (Contexto.RpaVms.Any())
+    {
+        <MudDataGrid
+            T="RpaVm"
+            Items="@Contexto.RpaVms"
+            ReadOnly="false"
+            Hover="true"
+            Dense="true"
+            Bordered="true"
+            FixedHeader="true"
+            Virtualize="true">
+            <ToolBarContent>
+                <MudButton
+                    Variant="Variant.Filled"
+                    Size="Size.Medium"
+                    Color="Color.Tertiary"
+                    StartIcon="@Icons.Material.TwoTone.Add"
+                    OnClick="() => NavigateToAssociatePage(Contexto)">
+                        Associar nova máquina.
+                </MudButton>
+            </ToolBarContent>
+            <ColGroup>
+                <col style="width: 5%;"/>
+                <col style="width: 5%;"/>
+                <col style="width: 5%;"/>
+                <col/>
+            </ColGroup>
+            <Columns>
+                <PropertyColumn Property="x => x.IdVmfkNavigation!.Hostname" Title="Hostname" Style="width: 5%"/>
+                <PropertyColumn Property="x => x.Funcao" Title="Função" Style="width: 5%"/>
+                <PropertyColumn Property="x => x.Status" Style="width: 5%"/>
+                <PropertyColumn Property="x => x.Observacao" Title="Observação"/>
+            </Columns>
+        </MudDataGrid>
+    }
+    else
+    {
+        <MudButton
+            Variant="Variant.Filled"
+            Size="Size.Medium"
+            Color="Color.Tertiary"
+            StartIcon="@Icons.Material.TwoTone.Add"
+            OnClick="() => NavigateToAssociatePage(Contexto)">
+            Associar nova máquina.
+        </MudButton>
+        <MudPaper><MudText> Não há máquinas associadas cadastradas.</MudText></MudPaper>
+    }
+}
+
+

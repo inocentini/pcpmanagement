@@ -1,5 +1,6 @@
 ﻿using System.Text.Json.Serialization;
-using PcpManagement.Core.Enums;
+using PcpManagement.Core.Common;
+using PcpManagement.Core.Common.Enum;
 
 namespace PcpManagement.Core.Responses;
 

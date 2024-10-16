@@ -6,9 +6,10 @@ namespace PcpManagement.Core.Handlers;
 
 public interface IVirtualMachineHandler
 {
-    Task<Response<VirtualMachine?>> CreateAsync(CreateVirtualMachineRequest request);
-    Task<Response<VirtualMachine?>> UpdateAsync(UpdateVirtualMachineRequest request);
-    Task<Response<VirtualMachine?>> DeleteAsync(DeleteVirtualMachineRequest request);
-    Task<Response<VirtualMachine?>> GetByIdAsync(GetVirtualMachineByIdRequest request);
-    Task<PagedResponse<List<VirtualMachine>?>> GetAllAsync(GetAllVirtualMachinesRequest request);
+    Task<Response<Vm?>> CreateAsync(CreateVirtualMachineRequest request);
+    Task<Response<Vm?>> UpdateAsync(UpdateVirtualMachineRequest request);
+    Task<Response<Vm?>> DeleteAsync(DeleteVirtualMachineRequest request);
+    Task<Response<Vm?>> GetByIdAsync(GetVirtualMachineByIdRequest request);
+    Task<PagedResponse<List<Vm>>> GetAllAsync(GetAllVirtualMachinesRequest request);
+    Task<PagedResponse<List<Vm>>> GetAllWithoutAssociationAsync(GetAllVirtualMachineWithouAssociationRequest request);
 }

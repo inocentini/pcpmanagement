@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace PcpManagement.Core.Requests.Robos;
 
@@ -7,29 +6,53 @@ public class CreateRoboRequest : Request
 {
     [Required(ErrorMessage = "Informe o Id do Projeto")]
     [StringLength(32, ErrorMessage = "O Id do Projeto deve ter até 32 caracteres")]
-    [MinLength(5, ErrorMessage = "O Id do Projeto deve conter pelo menos 5 caracteres. Ex.: 12345")]
-    public string IdProjeto { get; set; } = string.Empty;
+    public string IdProjeto { get; set; } = null!;
     
     [Required(ErrorMessage = "Informe o PTI do Projeto")]
     [StringLength(32, ErrorMessage = "O PTI do Projeto deve ter até 32 caracteres")]
-    [MinLength(5, ErrorMessage = "O PTI deve conter pelo menos 5 caracteres. Ex.: PTI-123")]
-    [DisplayName]
-    public string PTI { get; set; } = string.Empty;
-    
-    public string Projeto { get; set; } = string.Empty;
-    public string Descricao { get; set; } = string.Empty;
-    public string Scrum { get; set; } = string.Empty;
-    public string Gerencia { get; set; } = string.Empty;
-    public string Equipe { get; set; } = string.Empty;
-    public string Aplicacao { get; set; } = string.Empty;
-    public string Torre { get; set; } = string.Empty;
-    public string SuporteFabrica { get; set; } = string.Empty;
-    public DateTime KTDate { get; set; }
-    public string ProjetoEm { get; set; } = string.Empty;
-    public string ClusterAplicacao { get; set; } = string.Empty;
-    public string BancoDeDados { get; set; } = string.Empty;
-    public string NumCRQ { get; set; } = string.Empty;
-    public string StatusCRQ { get; set; } = string.Empty;
-    public DateTime BlindagemDate { get; set; }
-    public int QtdLicenca { get; set; }
+    public string Pti { get; set; } = null!;
+
+    [StringLength(128, ErrorMessage = "O nome do Projeto deve ter até 128 caracteres.")]
+    public string? Projeto { get; set; }
+
+    public string? Descricao { get; set; }
+
+    [StringLength(128,ErrorMessage = "O Scrum do Projeto deve ter até 8 caracteres")]
+    public string? Scrum { get; set; }
+
+    [StringLength(128,ErrorMessage = "A Gerencia do Projeto deve ter até 8 caracteres")]
+    public string? Gerencia { get; set; }
+
+    [StringLength(64,ErrorMessage = "A Equipe do Projeto deve ter até 4 caracteres")]
+    public string? Equipe { get; set; }
+
+    [StringLength(64,ErrorMessage = "A Aplicacao do Projeto deve ter até 4 caracteres")]
+    public string? Aplicacao { get; set; }
+
+    [StringLength(32,ErrorMessage = "A Torre do Projeto deve ter até 2 caracteres")]
+    public string? Torre { get; set; }
+
+    [StringLength(64,ErrorMessage = "O SuporteFabrica do Projeto deve ter até 4 caracteres")]
+    public string? SuporteFabrica { get; set; }
+
+    public DateTime? KtDate { get; set; }
+
+    [StringLength(32,ErrorMessage = "O ProjetoEm do Projeto deve ter até 2 caracteres")]
+    public string? ProjetoEm { get; set; }
+
+    [StringLength(64,ErrorMessage = "O ClusterAplicacao do Projeto deve ter até 4 caracteres")]
+    public string? ClusterAplicacao { get; set; }
+
+    [StringLength(64,ErrorMessage = "O BancodeDados do Projeto deve ter até 4 caracteres")]
+    public string? BancodeDados { get; set; }
+
+    [StringLength(32,ErrorMessage = "O NumCrq do Projeto deve ter até 2 caracteres")]
+    public string? NumCrq { get; set; }
+
+    [StringLength(32,ErrorMessage = "O StatusCrq do Projeto deve ter até 2 caracteres")]
+    public string? StatusCrq { get; set; }
+
+    public DateTime? BlindagemDate { get; set; }
+
+    public int? QtdLicenca { get; set; }
 }

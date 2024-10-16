@@ -1,0 +1,85 @@
+﻿@page "/legados"
+@using PcpManagement.Core.Common
+@using PcpManagement.Core.Models
+@inherits GetAllLegadosPage
+
+
+<MudPaper class="d-flex justify-end">
+    <MudButton
+        Variant="Variant.Filled"
+        Size="Size.Medium"
+        Color="Color.Tertiary"
+        StartIcon="@Icons.Material.TwoTone.Add"
+        Href="/legados/create">
+        NOVO LEGADO
+    </MudButton>
+    <MudButton
+        Variant="Variant.Filled"
+        Size="Size.Medium"
+        Color="Color.Tertiary"
+        StartIcon="@Icons.Material.TwoTone.Add"
+        Href="/rpavmslegados/associate">
+        ASSOCIAR LEGADO
+    </MudButton>
+</MudPaper>
+
+
+<MudDataGrid T="Legados"
+             Class="d-flex flex-column flex-grow-1 gap-4"
+             Items="@AllLegados"
+             Filterable="true"
+             QuickFilter="Filter"
+             Hideable="true"
+             ReadOnly="false"
+             EditMode="DataGridEditMode.Form"
+             Hover="true"
+             Dense="true"
+             Bordered="true"
+             FixedHeader="true"
+             FixedFooter="true"
+             CommittedItemChanges="@OnCommittedItemChanges"
+             RowsPerPage="@Configuration.DefaultPageSize"
+             EditTrigger="@(DataGridEditTrigger.Manual)">
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">Legados</MudText>
+        <MudSpacer />
+        <MudTextField
+            @bind-Value="@SearchTerm"
+            Placeholder="Pesquisar..."
+            Adornment="Adornment.Start"
+            Immediate="true"
+            AdornmentIcon="@Icons.Material.Filled.Search"
+            IconSize="Size.Medium">
+        </MudTextField>
+    </ToolBarContent>
+    <Columns>
+        @if (!(@AllLegados.Count > 0))
+        {
+        <MudCard Class="d-flex justify-content-center align-content-end">
+            <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+        </MudCard>
+        }
+        <TemplateColumn CellClass="d-flex; align-content-stretch;" Title="Opções">
+            <CellTemplate>
+                <MudMenu Icon="@Icons.Material.Outlined.Menu">
+                    <MudIconButton
+                        Icon="@Icons.Material.Filled.Edit"
+                        Color="Color.Primary"
+                        OnClick="@context.Actions.StartEditingItemAsync"/>
+                    <MudIconButton
+                        Icon="@Icons.Material.Filled.Delete"
+                        Color="Color.Error"
+                        OnClick="() => OnDeleteButtonClickedAsync(context.Item.Id, context.Item.Nome!)"/>
+                </MudMenu>
+            </CellTemplate>
+        </TemplateColumn>
+        <PropertyColumn Property="x => x.Id" Hidden="true" Class=".d-none" Editable="false"/>
+        <PropertyColumn Property="x => x.Nome" Required="true"/>
+        <PropertyColumn Property="x => x.Autenticacao" Title="Autenticação" Required="true"/>
+        <PropertyColumn Property="x => x.Acesso"/>
+        <PropertyColumn Property="x => x.Url"/>
+    </Columns>
+    <PagerContent>
+        <MudDataGridPager T="Legados" />
+    </PagerContent>
+</MudDataGrid>

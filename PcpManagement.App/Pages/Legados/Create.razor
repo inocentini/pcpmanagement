@@ -1,0 +1,27 @@
+﻿@page "/legados/create"
+@inherits CreateLegadoPage
+
+<EditForm Model="@Request" OnValidSubmit="OnValidSubmitAsync">
+    <DataAnnotationsValidator/>
+    <MudGrid Class="d-flex justify-center">
+        <MudItem xs="12" sm="7">
+            <MudCard>
+                <MudText Typo="Typo.h4" Align="Align.Center"><b>Cadastro Novo Legado</b></MudText>
+                <MudCardContent>
+                    <MudTextField Label="Legado:" Required="true" RequiredError="Campo obrigatório." @bind-Value="Request.Nome" For="@(() => Request.Nome)"/>
+                    <MudTextField Label="Autenticação:" Required="true" RequiredError="Campo obrigatório." @bind-Value="Request.Autenticacao" For="@(() => Request.Autenticacao)"/>
+                    <MudTextField Label="Acesso:" Required="true" RequiredError="Campo obrigatório." @bind-Value="Request.Acesso" For="@(() => Request.Acesso)"/>
+                    <MudTextField Label="Url:" Required="true" RequiredError="Campo obrigatório." @bind-Value="Request.Url" For="@(() => Request.Url)"/>
+                </MudCardContent>
+                <MudCardActions>
+                    <MudButton ButtonType="ButtonType.Submit"
+                               Class="ml-auto"
+                               Variant="Variant.Filled"
+                               Color="Color.Tertiary">
+                        Salvar
+                    </MudButton>
+                </MudCardActions>
+            </MudCard>
+        </MudItem>
+    </MudGrid>
+</EditForm>

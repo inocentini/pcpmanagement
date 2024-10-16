@@ -1,0 +1,96 @@
+@page "/robos"
+@using PcpManagement.Core.Common
+@using PcpManagement.Core.Models
+@using PcpManagement.App.Common.Components
+@inherits GetAllRobosPage
+
+<MudPaper class="d-flex justify-end">
+    <MudButton
+        Variant="Variant.Filled"
+        Size="Size.Medium"
+        Color="Color.Tertiary"
+        StartIcon="@Icons.Material.TwoTone.Add"
+        Href="/robos/adicionar">
+        ADICIONAR NOVO ROBO
+    </MudButton>
+</MudPaper>
+
+<MudDataGrid
+    T="Robo"
+    Class="d-flex flex-column flex-grow-1 gap-4"
+    Items ="@Robos"
+    Filterable="true"
+    QuickFilter="Filter"
+    Hideable="true"
+    ReadOnly="false"
+    EditMode="DataGridEditMode.Form"
+    Hover="true"
+    Dense="true"
+    Bordered="true"
+    FixedHeader="true"
+    FixedFooter="true"
+    CommittedItemChanges="@OnCommittedItemChanges"
+    RowsPerPage="@Configuration.DefaultPageSize"
+    EditTrigger="@(DataGridEditTrigger.Manual)">
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">Robos</MudText>
+        <MudSpacer />
+        <MudTextField
+            @bind-Value="SearchTerm"
+            Placeholder="Pesquisar..."
+            Adornment="Adornment.Start"
+            Immediate="true"
+            AdornmentIcon="@Icons.Material.Filled.Search"
+            IconSize="Size.Medium">
+        </MudTextField>
+    </ToolBarContent>
+    <Columns>
+        @if (!(Robos.Count > 0))
+        {
+            <MudCard Class="d-flex">
+                <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+            </MudCard>
+        }
+        <TemplateColumn CellClass="d-flex; align-content-stretch;" Style="justify-content: start" Title="Opções">
+            <CellTemplate>
+                <MudMenu Icon="@Icons.Material.Outlined.Menu">
+                    <MudIconButton
+                        Icon="@Icons.Material.Filled.Edit"
+                        Color="Color.Primary"
+                        OnClick="@context.Actions.StartEditingItemAsync"/>
+                    <MudIconButton
+                        Icon="@Icons.Material.Filled.Delete"
+                        Color="Color.Error"
+                        OnClick="() => OnDeleteButtonClickedAsync(context.Item.Id, context.Item.Projeto)"/>
+                </MudMenu>
+            </CellTemplate>
+        </TemplateColumn>
+        <HierarchyColumn T="Robo" InitiallyExpandedFunc="robo => robo.RpaVms?.Any() ?? false"/>
+        <PropertyColumn Property="x => x.Id" Hidden="true" Class=".d-none" Editable="false"/>
+        <PropertyColumn Property="x => x.IdProjeto" Required="true"/>
+        <PropertyColumn Property="x => x.Pti" Required="true"/>
+        <PropertyColumn Property="x => x.Projeto" Required="true" CellStyle="max-width: 450px; overflow: auto; white-space: nowrap;"/>
+        <PropertyColumn Property="x => x.Descricao" Title="Descrição" CellStyle="max-width: 450px; overflow: auto; white-space: nowrap;"/>
+        <PropertyColumn Property="x => x.Scrum"/>
+        <PropertyColumn Property="x => x.Gerencia"/>
+        <PropertyColumn Property="x => x.Equipe"/>
+        <PropertyColumn Property="x => x.Aplicacao" Title="Aplicação"/>
+        <PropertyColumn Property="x => x.Torre"/>
+        <PropertyColumn Property="x => x.SuporteFabrica" title="Fábrica"/>
+        <PropertyColumn Property="x => x.KtDate" Title="Data KT"/>
+        <PropertyColumn Property="x => x.ProjetoEm" Title="Projeto em:"/>
+        <PropertyColumn Property="x => x.ClusterAplicacao" Title="Cluster"/>
+        <PropertyColumn Property="x => x.BancodeDados" Title="Banco de Dados"/>
+        <PropertyColumn Property="x => x.NumCrq" title="CRQ/CHG"/>
+        <PropertyColumn Property="x => x.StatusCrq" Title="Status CRQ/CHG"/>
+        <PropertyColumn Property="x => x.BlindagemDate" Title="Data Blindagem"/>
+        <PropertyColumn Property="x => x.QtdLicenca" Title="Quantidade Licenca"/>
+    </Columns>
+    <ChildRowContent>
+        <DataGridRpaVmsAssociated @ref="RpaVmsComponent" Contexto="context.Item"/>
+    </ChildRowContent>
+    <PagerContent>
+        <MudDataGridPager T="Robo" />
+    </PagerContent>
+</MudDataGrid>
+

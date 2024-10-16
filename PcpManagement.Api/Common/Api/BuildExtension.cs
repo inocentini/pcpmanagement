@@ -1,8 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using PcpManagement.Api.Data;
 using PcpManagement.Api.Services;
-using PcpManagement.Core;
+using PcpManagement.Core.Common;
 using PcpManagement.Core.Handlers;
+using System.Reflection;
 
 namespace PcpManagement.Api.Common.Api;
 
@@ -10,11 +12,18 @@ public static class BuildExtension
 {
     public static void AddConfiguration(this WebApplicationBuilder builder)
     {
-        ApiConfiguration.ConnectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? string.Empty;
-        /* Adicionar no appSettings ou user-secrets futuramente
-        Configuration.BackendUrl = builder.Configuration.GetValue<string>("BackendUrl") ?? string.Empty;
-        Configuration.FrontendUrl = builder.Configuration.GetValue<string>("FrontendUrl") ?? string.Empty;
-        */
+        builder.Configuration.Sources.Clear();
+        builder.Configuration
+            .AddJsonFile("appsettings.json")
+            .AddJsonFile("appsettings.Development.json",false)
+            .AddUserSecrets(Assembly.GetEntryAssembly()!);
+        var connStr = new SqlConnectionStringBuilder(builder.Configuration.GetConnectionString("Dev"))
+            {
+                Password = builder.Configuration.GetSection("DbPwd").Value
+            };
+        Configuration.ConnectionString = connStr.ConnectionString;
+        Configuration.BackendUrl = builder.Configuration.GetSection("BackendUrl").Value ?? string.Empty;
+        Configuration.FrontendUrl = builder.Configuration.GetSection("FrontendUrl").Value ?? string.Empty;
     }
     
     public static void AddDocumentation(this WebApplicationBuilder builder)
@@ -25,18 +34,29 @@ public static class BuildExtension
             x.CustomSchemaIds(n => n.FullName);
         });
     }
+    /*
+    public static void AddLogging(this WebApplicationBuilder builder)
+        => builder
+            .Logging.ClearProviders()
+            .AddConsole()
+            .AddDebug()
+            .AddEventLog()
+            .AddEventSourceLogger()
+            .SetMinimumLevel(LogLevel.Debug)
+            .Services.AddLogging();
+    */
     
     public static void AddDataContexts(this WebApplicationBuilder builder)
-    => builder
+        => builder
             .Services
-            .AddDbContext<AppDbContext>(
+            .AddDbContext<RpaContext>(
                 x =>
                 {
-                    x.UseSqlServer(ApiConfiguration.ConnectionString);
+                    x.UseSqlServer(Configuration.ConnectionString);
                 });
     
     public static void AddCrossOrigin(this WebApplicationBuilder builder)
-    => builder.Services.AddCors(
+        => builder.Services.AddCors(
             options => options.AddPolicy(
                 ApiConfiguration.CorsPolicyName,
                 policy => policy
@@ -48,8 +68,13 @@ public static class BuildExtension
                     .AllowAnyHeader()
                     .AllowCredentials()
             ));
+
     public static void AddServices(this WebApplicationBuilder builder)
-    => builder
+        => builder
             .Services
-            .AddTransient<IVirtualMachineHandler, VirtualMachineService>();
+            .AddTransient<IVirtualMachineHandler, VirtualMachineService>()
+            .AddTransient<IRoboHandler, RoboService>()
+            .AddTransient<IRpaVmHandler,RpaVmsService>()
+            .AddTransient<ILegadoHandler, LegadoService>()
+            .AddTransient<IRpaVmsLegadoHandler, RpaVmsLegadoService>();
 }
